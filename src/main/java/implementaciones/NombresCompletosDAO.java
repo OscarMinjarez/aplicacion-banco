@@ -28,10 +28,10 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
 
         try (
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
-            comando.setInt(1, id);
-            ResultSet resultado = comando.executeQuery();
+                comando.setInt(1, id);
+                ResultSet resultado = comando.executeQuery();
 
-            NombreCompleto nombreCompleto = null;
+                NombreCompleto nombreCompleto = null;
 
             if (resultado.next()) {
                 Integer idNombreCompleto = resultado.getInt("idNombreCompleto");
@@ -53,7 +53,7 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
     public NombreCompleto insertar(NombreCompleto nombreCompleto) throws PersistenciaException {
         String codigoSQL = "INSERT INTO NombresCompletos (nombres, apellidoPaterno, apellidoMaterno) "
                 + "VALUES(?,?,?)";
-        try( 
+        try ( 
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
                 PreparedStatement comando = conexion.prepareStatement(
                         codigoSQL,
@@ -83,7 +83,20 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
 
     @Override
     public NombreCompleto eliminar(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String codigoSQL = "DELETE FROM NombresCompletos WHERE idNombreCompleto = ?";
+        
+        try {
+            Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            
+            NombreCompleto nombreBusca = this.consultar(id);
+            comando.setInt(1, id);
+            comando.execute();
+            
+            return nombreBusca;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
-
 }

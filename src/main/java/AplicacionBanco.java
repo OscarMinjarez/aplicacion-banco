@@ -15,14 +15,15 @@ public class AplicacionBanco {
         IConexionBD manejadorConexiones = new ConexionBD(
                 "jdbc:mysql://localhost/banco",
                 "root",
-                "130920"
+                "1234"
         );
         
         NombresCompletosDAO nombresCompletos = new NombresCompletosDAO(manejadorConexiones);
         
-        nombresCompletos.insertar(new NombreCompleto("Naely", "Rubio", "Morillon"));
+        // nombresCompletos.insertar(new NombreCompleto("Naely", "Rubio", "Morillon"));
         
-        System.out.println(nombresCompletos.consultar(0));
+        System.out.println(nombresCompletos.consultar(1));
+        System.out.println(nombresCompletos.eliminar(1));
         System.out.println(nombresCompletos.consultar(1));
     }
 }
