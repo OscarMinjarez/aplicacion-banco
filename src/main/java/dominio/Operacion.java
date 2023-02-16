@@ -3,21 +3,21 @@ package dominio;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Operaciones {
+public class Operacion {
 
     private String folio;
     private LocalDate fechaHora;
     private double monto;
 
-    public Operaciones() {
+    public Operacion() {
     }
 
-    public Operaciones(LocalDate fechaHora, double monto) {
+    public Operacion(LocalDate fechaHora, double monto) {
         this.fechaHora = fechaHora;
         this.monto = monto;
     }
 
-    public Operaciones(String folio, LocalDate fechaHora, double monto) {
+    public Operacion(String folio, LocalDate fechaHora, double monto) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.monto = monto;
@@ -65,7 +65,7 @@ public class Operaciones {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Operaciones other = (Operaciones) obj;
+        final Operacion other = (Operacion) obj;
         if (!Objects.equals(this.folio, other.folio)) {
             return false;
         }

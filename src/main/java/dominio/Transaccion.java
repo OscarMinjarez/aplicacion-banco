@@ -2,22 +2,22 @@ package dominio;
 
 import java.time.LocalDate;
 
-public class Transacciones extends Operaciones {
+public class Transaccion extends Operacion {
 
     private Integer idCuentaOrigen;
     private Integer idCuentaDestino;
 
-    public Transacciones() {
+    public Transaccion() {
         super();
     }
 
-    public Transacciones(Integer idCuentaOrigen, Integer idCuentaDestino, LocalDate fechaHora, double monto) {
+    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, LocalDate fechaHora, double monto) {
         super(fechaHora, monto);
         this.idCuentaOrigen = idCuentaOrigen;
         this.idCuentaDestino = idCuentaDestino;
     }
 
-    public Transacciones(Integer idCuentaOrigen, Integer idCuentaDestino, String folio, LocalDate fechaHora, double monto) {
+    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, String folio, LocalDate fechaHora, double monto) {
         super(folio, fechaHora, monto);
         this.idCuentaOrigen = idCuentaOrigen;
         this.idCuentaDestino = idCuentaDestino;
