@@ -5,10 +5,18 @@
     <artifactId>AplicacionBanco</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <properties>
+    <properties> 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <exec.mainClass>AplicacionBanco</exec.mainClass>
     </properties>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.32</version>
+        </dependency>
+    </dependencies>
 </project>
