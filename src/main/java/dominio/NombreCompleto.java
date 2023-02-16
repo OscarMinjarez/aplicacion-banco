@@ -12,6 +12,12 @@ public class NombreCompleto {
     public NombreCompleto() {
     }
 
+    public NombreCompleto(String nombres, String apellidoPaterno, String apellidoMaterno) {
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
     public NombreCompleto(Integer idNombre, String nombres, String apellidoPaterno, String apellidoMaterno) {
         this.idNombre = idNombre;
         this.nombres = nombres;
