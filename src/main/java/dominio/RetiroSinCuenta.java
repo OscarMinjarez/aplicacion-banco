@@ -2,7 +2,7 @@ package dominio;
 
 import java.time.LocalDate;
 
-public class RetiroSinCuenta extends Operaciones {
+public class RetiroSinCuenta extends Operacion {
 
     private Integer idCuenta;
     private String contrasenia;
