@@ -20,9 +20,10 @@ public class AplicacionBanco {
         
         NombresCompletosDAO nombresCompletos = new NombresCompletosDAO(manejadorConexiones);
         
-        nombresCompletos.insertar(new NombreCompleto("Naely", "Rubio", "Morillon"));
+        //nombresCompletos.insertar(new NombreCompleto("Naely", "Rubio", "Morillon"));
+        nombresCompletos.insertar(new NombreCompleto("Oscar", "Minjarez", "Zavala"));
         
         System.out.println(nombresCompletos.consultar(0));
-        System.out.println(nombresCompletos.consultar(1));
+        System.out.println(nombresCompletos.consultar(2));
     }
 }
