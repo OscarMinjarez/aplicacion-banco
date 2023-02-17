@@ -27,7 +27,8 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
                 + "FROM NombresCompletos WHERE idNombreCompleto = ?";
 
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)
+        ) {
                 comando.setInt(1, id);
                 ResultSet resultado = comando.executeQuery();
 
@@ -59,7 +60,7 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
                         codigoSQL,
                         Statement.RETURN_GENERATED_KEYS
                 );
-        ){
+        ) {
             comando.setString(1,  nombreCompleto.getNombres());
             comando.setString(2, nombreCompleto.getApellidoPaterno());
             comando.setString(3, nombreCompleto.getApellidoMaterno());
