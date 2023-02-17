@@ -22,7 +22,7 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
     }
 
     @Override
-    public NombreCompleto consultar(Integer id) {
+    public NombreCompleto consultar(Integer id) throws PersistenciaException {
         String codigoSQL = "SELECT idNombreCompleto, nombres, apellidoPaterno, apellidoMaterno "
                 + "FROM NombresCompletos WHERE idNombreCompleto = ?";
 
@@ -44,8 +44,8 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
 
             return nombreCompleto;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return null;
+            LOG.log(Level.WARNING, e.getMessage());
+            throw new PersistenciaException("No existe el nombre completo consultado: " + e.getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
     }
 
     @Override
-    public NombreCompleto eliminar(Integer id) {
+    public NombreCompleto eliminar(Integer id) throws PersistenciaException {
         String codigoSQL = "DELETE FROM NombresCompletos WHERE idNombreCompleto = ?";
         
         try {
@@ -95,8 +95,8 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
             
             return nombreBusca;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return null;
+            LOG.log(Level.WARNING, e.getMessage());
+            throw new PersistenciaException("No existe el nombre completo a eliminar: " + e.getMessage());
         }
     }
 }
