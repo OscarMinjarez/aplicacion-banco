@@ -8,6 +8,7 @@ import excepciones.PersistenciaException;
 import implementaciones.ConexionBD;
 import implementaciones.NombresCompletosDAO;
 import interfaces.IConexionBD;
+import presentacion.PantallaInicio;
 
 public class AplicacionBanco {
 
@@ -18,12 +19,7 @@ public class AplicacionBanco {
                 "1234"
         );
         
-        NombresCompletosDAO nombresCompletos = new NombresCompletosDAO(manejadorConexiones);
-        
-        // nombresCompletos.insertar(new NombreCompleto("Naely", "Rubio", "Morillon"));
-        
-        System.out.println(nombresCompletos.consultar(1));
-        System.out.println(nombresCompletos.eliminar(1));
-        System.out.println(nombresCompletos.consultar(1));
+        PantallaInicio inicio = new PantallaInicio();
+        inicio.setVisible(true);
     }
 }
