@@ -39,7 +39,7 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
                 String nombres = resultado.getString("nombres");
                 String apellidoPaterno = resultado.getString("apellidoPaterno");
                 String apellidoMaterno = resultado.getString("apellidoMaterno");
-
+                
                 nombreCompleto = new NombreCompleto(idNombreCompleto, nombres, apellidoPaterno, apellidoMaterno);
             }
 

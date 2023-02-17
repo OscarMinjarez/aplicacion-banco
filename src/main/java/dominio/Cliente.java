@@ -1,14 +1,13 @@
 package dominio;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Cliente {
     
     private Integer idCliente;
-    private Integer idNombreNombre;
+    private Integer idNombre;
     private Integer idDireccion;
-    private LocalDate fechaNacimiento;
+    private String fechaNacimiento;
     private String telefono;
     private String usuario;
     private String contrasenia;
@@ -16,8 +15,8 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(Integer idNombreNombre, Integer idDireccion, LocalDate fechaNacimiento, String telefono, String usuario, String contrasenia) {
-        this.idNombreNombre = idNombreNombre;
+    public Cliente(Integer idNombre, Integer idDireccion, String fechaNacimiento, String telefono, String usuario, String contrasenia) {
+        this.idNombre = idNombre;
         this.idDireccion = idDireccion;
         this.fechaNacimiento = fechaNacimiento;
         this.telefono = telefono;
@@ -25,9 +24,9 @@ public class Cliente {
         this.contrasenia = contrasenia;
     }
 
-    public Cliente(Integer idCliente, Integer idNombreNombre, Integer idDireccion, LocalDate fechaNacimiento, String telefono, String usuario, String contrasenia) {
+    public Cliente(Integer idCliente, Integer idNombre, Integer idDireccion, String fechaNacimiento, String telefono, String usuario, String contrasenia) {
         this.idCliente = idCliente;
-        this.idNombreNombre = idNombreNombre;
+        this.idNombre = idNombre;
         this.idDireccion = idDireccion;
         this.fechaNacimiento = fechaNacimiento;
         this.telefono = telefono;
@@ -43,12 +42,12 @@ public class Cliente {
         this.idCliente = idCliente;
     }
 
-    public Integer getIdNombreNombre() {
-        return idNombreNombre;
+    public Integer getIdNombre() {
+        return idNombre;
     }
 
-    public void setIdNombreNombre(Integer idNombreNombre) {
-        this.idNombreNombre = idNombreNombre;
+    public void setIdNombre(Integer idNombre) {
+        this.idNombre = idNombre;
     }
 
     public Integer getIdDireccion() {
@@ -59,11 +58,11 @@ public class Cliente {
         this.idDireccion = idDireccion;
     }
 
-    public LocalDate getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -117,6 +116,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "idCliente=" + idCliente + ", idNombreNombre=" + idNombreNombre + ", idDireccion=" + idDireccion + ", fechaNacimiento=" + fechaNacimiento + ", telefono=" + telefono + ", usuario=" + usuario + ", contrasenia=" + contrasenia + '}';
+        return "Cliente{" + "idCliente=" + idCliente + ", idNombr=" + idNombre + ", idDireccion=" + idDireccion + ", fechaNacimiento=" + fechaNacimiento + ", telefono=" + telefono + ", usuario=" + usuario + ", contrasenia=" + contrasenia + '}';
     }
 }

@@ -5,6 +5,7 @@
 package interfaces;
 
 import dominio.Cliente;
+import excepciones.PersistenciaException;
 
 /**
  *
@@ -13,11 +14,11 @@ import dominio.Cliente;
 public interface IClientesDAO {
     
     
-    public Cliente consultar(Integer id);
+    public Cliente consultar(Integer id) throws PersistenciaException;
 
-    public Cliente insertar(Cliente cliente);
+    public Cliente insertar(Cliente cliente)throws PersistenciaException;
 
-    public Cliente eliminar(Integer id);
+    public Cliente eliminar(Integer id)throws PersistenciaException;
        
 }
 

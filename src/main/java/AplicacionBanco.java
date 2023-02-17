@@ -16,7 +16,7 @@ public class AplicacionBanco {
         IConexionBD manejadorConexiones = new ConexionBD(
                 "jdbc:mysql://localhost/banco",
                 "root",
-                "1234"
+                "130920"
         );
         
         PantallaInicio inicio = new PantallaInicio();
