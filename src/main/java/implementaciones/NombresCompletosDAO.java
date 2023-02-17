@@ -27,7 +27,8 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
                 + "FROM NombresCompletos WHERE idNombreCompleto = ?";
 
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+                PreparedStatement comando = conexion.prepareStatement(codigoSQL)
         ) {
                 comando.setInt(1, id);
                 ResultSet resultado = comando.executeQuery();
@@ -74,8 +75,8 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
                 return nombreCompleto;
             }
             
-            LOG.log(Level.WARNING, "Se inserto el nombre completo pero no se generó id.");
-            throw new PersistenciaException("Se inserto el nombre completo pero no se generó id.");
+            LOG.log(Level.WARNING, "Se inserto el nombre completo pero no se genero id.");
+            throw new PersistenciaException("Se inserto el nombre completo pero no se genero id.");
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
             throw new PersistenciaException("No se pudo insertar el nombre completo: " + e.getMessage());

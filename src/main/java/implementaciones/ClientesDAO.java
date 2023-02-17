@@ -27,16 +27,17 @@ public class ClientesDAO implements IClientesDAO {
 
     public ClientesDAO(IConexionBD MANEJADOR_CONEXIONES) {
         this.MANEJADOR_CONEXIONES = MANEJADOR_CONEXIONES;
-
     }
 
     @Override
     public Cliente consultar(Integer id) throws PersistenciaException {
-        String codigoSQL = "SELECT idCliente, idNombre, idDireccion, fechaNacimiento, telefono, usuario, contrasenia"
+        String codigoSQL = "SELECT idCliente, idNombreCompleto, idDireccion, fechaNacimiento, telefono, usuario, contrasenia "
                 + "FROM Clientes WHERE idCliente = ?";
 
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+                PreparedStatement comando = conexion.prepareStatement(codigoSQL)
+        ) {
             comando.setInt(1, id);
             ResultSet resultado = comando.executeQuery();
 
@@ -44,7 +45,7 @@ public class ClientesDAO implements IClientesDAO {
 
             if (resultado.next()) {
                 Integer idCliente = resultado.getInt("idCliente");
-                Integer idNombre = resultado.getInt("idNombre");
+                Integer idNombre = resultado.getInt("idNombreCompleto");
                 Integer idDireccion = resultado.getInt("idDireccion");
                 String fechaNacimiento = resultado.getString("fechaNacimiento");
                 String telefono = resultado.getString("telefono");
@@ -53,9 +54,10 @@ public class ClientesDAO implements IClientesDAO {
 
                 cliente = new Cliente(idCliente, idNombre, idDireccion, fechaNacimiento, telefono, usuario, contrasenia);
             }
+            
             return cliente;
         } catch (SQLException ex) {
-            Logger.getLogger(ClientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.log(Level.WARNING, ex.getMessage());
             throw new PersistenciaException("No existe el cliente a consultar" + ex.getMessage());
         }
 
@@ -63,21 +65,21 @@ public class ClientesDAO implements IClientesDAO {
 
     @Override
     public Cliente insertar(Cliente cliente) throws PersistenciaException {
-        String codigoSQL = "INSER INTO Cliente (idCliente, idNombre, idDireccion, fechaNacimiento, telefono, usuario, contrasenia)"
-                + "VALUES(?,?,?)";
+        String codigoSQL = "INSERT INTO Clientes (idNombreCompleto, idDireccion, fechaNacimiento, telefono, usuario, contrasenia)"
+                + "VALUES(?,?,?,?,?,?)";
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+                PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
                 Statement.RETURN_GENERATED_KEYS
-        );) {
-
-            comando.setInt(1, cliente.getIdCliente());
-            comando.setInt(2, cliente.getIdNombre());
-            comando.setInt(3, cliente.getIdDireccion());
-            comando.setString(4, cliente.getFechaNacimiento());
-            comando.setString(5, cliente.getTelefono());
+                );
+        ) {
+            comando.setInt(1, cliente.getIdNombre());
+            comando.setInt(2, cliente.getIdDireccion());
+            comando.setString(3, cliente.getFechaNacimiento());
+            comando.setString(4, cliente.getTelefono());
             //usuario - contrasenia
-            comando.setString(6, cliente.getUsuario());
+            comando.setString(5, cliente.getUsuario());
             comando.setString(6, cliente.getContrasenia());
 
             comando.executeLargeUpdate();
@@ -87,20 +89,19 @@ public class ClientesDAO implements IClientesDAO {
                 Integer id = resultado.getInt(Statement.RETURN_GENERATED_KEYS);
                 cliente.setIdCliente(id);
                 return cliente;
-
             }
 
-            LOG.log(Level.WARNING, "");
-            throw new PersistenciaException("");
+            LOG.log(Level.WARNING, "Se creo el cliente pero no se genero id.");
+            throw new PersistenciaException("Se creo el cliente pero no se genero id.");
         } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage());
-            throw new PersistenciaException("" + ex.getMessage());
+            LOG.log(Level.SEVERE, "No se pudo insertar el cliente.");
+            throw new PersistenciaException(ex.getMessage());
         }
     }
 
     @Override
     public Cliente eliminar(Integer id) throws PersistenciaException {
-        String codigoSQL = "DELETE FROM Cliente WHERE IdCliente =?";
+        String codigoSQL = "DELETE FROM Clientes WHERE IdCliente =?";
 
         try {
             Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
