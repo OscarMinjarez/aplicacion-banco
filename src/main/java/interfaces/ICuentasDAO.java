@@ -4,18 +4,18 @@
  */
 package interfaces;
 
-import dominio.Transaccion;
+import dominio.Cuenta;
 
 /**
  *
  * @author naely
  */
-public interface ITransaccionesDAO {
+public interface ICuentasDAO {
 
-    public Transaccion consultar(Integer id);
+    public Cuenta consultar(Integer id);
 
-    public Transaccion Insertar (Transaccion transaccion);
+    public Cuenta insertar(Cuenta cuenta);
 
-    public Transaccion eliminar(Integer id);
+    public Cuenta eliminar(Integer id);
 
 }

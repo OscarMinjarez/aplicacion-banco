@@ -4,23 +4,19 @@
  */
 package interfaces;
 
-import dominio.Cliente;
+import dominio.Direccion;
 import excepciones.PersistenciaException;
 
 /**
  *
  * @author naely
  */
-public interface IClientesDAO {
-    
-    
-    public Cliente consultar(Integer id) throws PersistenciaException;
+public interface IDireccionesDAO {
 
-    public Cliente insertar(Cliente cliente)throws PersistenciaException;
+    public Direccion consultar(Integer id) throws PersistenciaException;
 
-    public Cliente eliminar(Integer id)throws PersistenciaException;
-       
+    public Direccion insertar(Direccion direccion) throws PersistenciaException;
+
+    public Direccion eliminar(Integer id) throws PersistenciaException;
+
 }
-
-
-

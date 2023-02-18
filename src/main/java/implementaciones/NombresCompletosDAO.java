@@ -80,7 +80,7 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
             throw new PersistenciaException("No se pudo insertar el nombre completo: " + e.getMessage());
-        }  
+        }
     }
 
     @Override

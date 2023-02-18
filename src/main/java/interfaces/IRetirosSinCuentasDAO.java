@@ -4,18 +4,18 @@
  */
 package interfaces;
 
-import dominio.Transaccion;
+import dominio.RetiroSinCuenta;
 
 /**
  *
  * @author naely
  */
-public interface ITransaccionesDAO {
+public interface IRetirosSinCuentasDAO {
 
-    public Transaccion consultar(Integer id);
+    public RetiroSinCuenta consultar(Integer id);
 
-    public Transaccion Insertar (Transaccion transaccion);
+    public RetiroSinCuenta insertar(RetiroSinCuenta retiroSinCuenta);
 
-    public Transaccion eliminar(Integer id);
+    public RetiroSinCuenta eliminar(Integer id);
 
 }
