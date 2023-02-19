@@ -4,17 +4,93 @@
  */
 package presentacion;
 
+import dominio.Cliente;
+import dominio.Direccion;
+import interfaces.IClientesDAO;
+import java.util.logging.Logger;
+import dominio.NombreCompleto;
+import excepciones.PersistenciaException;
+import interfaces.IDireccionesDAO;
+import interfaces.INombresCompletosDAO;
+
 /**
  *
  * @author Oscar
  */
 public class RegistrarCliente extends javax.swing.JFrame {
 
+    private static final Logger LOG = Logger.getLogger(RegistrarCliente.class.getName());
+    private final IClientesDAO clientesDAO;
+    private final INombresCompletosDAO nombresCompletosDAO;
+    private final IDireccionesDAO direccionesDAO;
+    
     /**
      * Creates new form RegistrarCliente
      */
-    public RegistrarCliente() {
+    public RegistrarCliente(IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO, IDireccionesDAO direccionesDAO) {
+        this.clientesDAO = clientesDAO;
+        this.nombresCompletosDAO = nombresCompletosDAO;
+        this.direccionesDAO = direccionesDAO;
         initComponents();
+    }
+    
+    private NombreCompleto extraerDatosNombreCompleto() {
+        String nombres = this.txtNombre.getText();
+        String apellidoPaterno = this.txtApellidoPaterno.getText();
+        String apellidoMaterno = this.txtApellidoMaterno.getText();
+        
+        return new NombreCompleto(nombres, apellidoPaterno, apellidoMaterno);
+    }
+    
+    private Direccion extraerDatosDireccion() {
+        String calle = this.txtCalle.getText();
+        String numeroExterior = this.txtNumeroExterior.getText();
+        String numeroInterior = this.txtNumeroInterior.getText();
+        Integer codigoPostal = Integer.parseInt(this.txtCodigoPostal.getText());
+        String colonia = this.txtColonia.getText();
+        
+        return new Direccion(calle, numeroExterior, numeroInterior, codigoPostal, colonia);
+    }
+    
+    private Cliente extraerDatosCliente() {
+        String fechaDeNacimiento = this.txtAnio.getText() + "/" + this.txtMes.getText() + "/" + this.txtDia.getText();
+        String telefono = this.txtNumeroTelefonico.getText();
+        String nombreUsuario = this.txtNombreUsuario.getText();
+        String contrasenia = this.txtContrasenia.getText();
+        
+        return new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, contrasenia);
+    }
+    
+    private void guardarClienteEnBaseDeDatos() {
+        try {
+            NombreCompleto nombreCompleto = this.extraerDatosNombreCompleto();
+            NombreCompleto nombreCompletoGuardado = this.nombresCompletosDAO.insertar(new NombreCompleto(
+                    nombreCompleto.getNombres(),
+                    nombreCompleto.getApellidoPaterno(),
+                    nombreCompleto.getApellidoMaterno()
+            ));
+            
+            Direccion direccion = this.extraerDatosDireccion();
+            Direccion direccionGuardada = this.direccionesDAO.insertar(new Direccion(
+                    direccion.getCalle(),
+                    direccion.getNumeroExterior(),
+                    direccion.getNumeroInterior(),
+                    direccion.getIdDireccion(),
+                    direccion.getColonia()
+            ));
+            
+            Cliente cliente = this.extraerDatosCliente();
+            Cliente clienteGuardado = this.clientesDAO.insertar(new Cliente(
+                    nombreCompletoGuardado.getIdNombre(),
+                    direccionGuardada.getIdDireccion(),
+                    cliente.getFechaNacimiento(),
+                    cliente.getTelefono(),
+                    cliente.getUsuario(),
+                    cliente.getContrasenia()
+            ));
+        } catch (PersistenciaException e) {
+            
+        }
     }
 
     /**
@@ -80,8 +156,6 @@ public class RegistrarCliente extends javax.swing.JFrame {
         tituloUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         tituloUsuario.setText("Usuario:");
 
-        panelDatosPersonales.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
-
         tituloNombre.setText("Nombre(s):");
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -142,8 +216,6 @@ public class RegistrarCliente extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelUsuario.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
-
         tituloNumeroTelefonico.setText("Número telefónico:");
 
         txtNumeroTelefonico.addActionListener(new java.awt.event.ActionListener() {
@@ -200,8 +272,6 @@ public class RegistrarCliente extends javax.swing.JFrame {
                 .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(38, Short.MAX_VALUE))
         );
-
-        panelFechaDeNacimiento.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
 
         txtMes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,8 +335,6 @@ public class RegistrarCliente extends javax.swing.JFrame {
                     .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        panelDireccion.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
 
         tituloCalle.setText("Calle:");
 
@@ -427,14 +495,14 @@ public class RegistrarCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegistrarse)
                     .addComponent(btnCancelar))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        // TODO add your handling code here:
+        this.guardarClienteEnBaseDeDatos();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -497,40 +565,6 @@ public class RegistrarCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtColoniaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RegistrarCliente().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel anio;
