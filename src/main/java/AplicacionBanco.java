@@ -13,6 +13,7 @@ import implementaciones.DireccionesDAO;
 import implementaciones.NombresCompletosDAO;
 import interfaces.IConexionBD;
 import presentacion.PantallaInicio;
+import utils.ValidacionDatos;
 
 public class AplicacionBanco {
 

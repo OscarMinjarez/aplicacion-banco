@@ -13,6 +13,7 @@ import excepciones.PersistenciaException;
 import interfaces.IDireccionesDAO;
 import interfaces.INombresCompletosDAO;
 import javax.swing.JOptionPane;
+import utils.ValidacionDatos;
 
 /**
  *
@@ -44,6 +45,14 @@ public class RegistrarCliente extends javax.swing.JFrame {
             throw new PersistenciaException("Campos necesarios vacíos.");
         }
         
+        if (
+            !ValidacionDatos.validarSoloLetrasYLongitud(nombres, 50) ||
+            !ValidacionDatos.validarSoloLetrasYLongitud(apellidoPaterno, 50) ||
+            !ValidacionDatos.validarSoloLetrasYLongitud(apellidoMaterno, 50)
+        ) {
+            throw new PersistenciaException("Datos inválidos o longitud máxima de caracteres.");
+        }
+        
         return new NombreCompleto(nombres, apellidoPaterno, apellidoMaterno);
     }
     
@@ -61,6 +70,16 @@ public class RegistrarCliente extends javax.swing.JFrame {
             colonia.isBlank()
         ) {
             throw new PersistenciaException("Campos necesarios vacíos.");
+        }
+        
+        if (
+            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(calle, 100) ||
+            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(numeroExterior, 10) ||
+            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(numeroInterior, 10) ||
+            !ValidacionDatos.validarSoloNumerosYLongitud(codigoPostal, 5) ||
+            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(colonia, 100)
+        ) {
+            throw new PersistenciaException("Datos inválidos o longitud máxima de caracteres.");
         }
         
         return new Direccion(calle, numeroExterior, numeroInterior, codigoPostal, colonia);
@@ -81,6 +100,24 @@ public class RegistrarCliente extends javax.swing.JFrame {
             contrasenia.isBlank()
         ) {
             throw new PersistenciaException("Campos necesarios vacíos.");
+        }
+        
+        if (
+            !ValidacionDatos.validarSoloNumerosYLongitud(this.txtAnio.getText(), 4) ||
+            !ValidacionDatos.validarSoloNumerosYLongitud(this.txtMes.getText(), 2) ||
+            !ValidacionDatos.validarSoloNumerosYLongitud(this.txtDia.getText(), 2) ||
+            !ValidacionDatos.validarSoloNumerosYLongitud(telefono, 10)
+        ) {
+            throw new PersistenciaException("Datos inválidos, longitud máxima de caracteres y/o caracteres inválidos");
+        }
+        
+        if (
+            ValidacionDatos.validarCadenaConEspacios(nombreUsuario) ||
+            nombreUsuario.length() > 20 ||
+            ValidacionDatos.validarCadenaConEspacios(contrasenia) ||
+            contrasenia.length () > 50
+        ) {
+            throw new PersistenciaException("Credenciales invalidas.");
         }
         
         return new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, contrasenia);
@@ -222,18 +259,17 @@ public class RegistrarCliente extends javax.swing.JFrame {
         panelDatosPersonalesLayout.setHorizontalGroup(
             panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDatosPersonalesLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(tituloApellidoPaterno)
-                        .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(tituloApellidoMaterno))
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelDatosPersonalesLayout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(tituloNombre)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(tituloApellidoPaterno)
+                    .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tituloApellidoMaterno)
+                    .addGroup(panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelDatosPersonalesLayout.createSequentialGroup()
+                            .addGap(27, 27, 27)
+                            .addComponent(tituloNombre)))))
         );
         panelDatosPersonalesLayout.setVerticalGroup(
             panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
