@@ -1,27 +1,27 @@
 package dominio;
 
-import java.time.LocalDate;
 import java.util.Objects;
+
 
 public class Cuenta {
 
     private Integer idCuenta;
     private Integer idCliente;
     private String numeroCuenta;
-    private LocalDate fechaApertura;
+    private String fechaApertura;
     private double saldo;
 
     public Cuenta() {
     }
 
-    public Cuenta(Integer idCliente, String numeroCuenta, LocalDate fechaApertura, double saldo) {
+    public Cuenta(Integer idCliente, String numeroCuenta, String fechaApertura, double saldo) {
         this.idCliente = idCliente;
         this.numeroCuenta = numeroCuenta;
         this.fechaApertura = fechaApertura;
         this.saldo = saldo;
     }
 
-    public Cuenta(Integer idCuenta, Integer idCliente, String numeroCuenta, LocalDate fechaApertura, double saldo) {
+    public Cuenta(Integer idCuenta, Integer idCliente, String numeroCuenta, String fechaApertura, double saldo) {
         this.idCuenta = idCuenta;
         this.idCliente = idCliente;
         this.numeroCuenta = numeroCuenta;
@@ -53,11 +53,11 @@ public class Cuenta {
         this.numeroCuenta = numeroCuenta;
     }
 
-    public LocalDate getFechaApertura() {
+    public String getFechaApertura() {
         return fechaApertura;
     }
 
-    public void setFechaApertura(LocalDate fechaApertura) {
+    public void setFechaApertura(String fechaApertura) {
         this.fechaApertura = fechaApertura;
     }
 

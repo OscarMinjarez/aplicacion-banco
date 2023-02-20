@@ -1,3 +1,4 @@
+
 package implementaciones;
 
 import dominio.Direccion;
@@ -12,9 +13,11 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import interfaces.IDireccionesDAO;
+
 public class DireccionesDAO implements IDireccionesDAO {
 
-    private static final Logger LOG = Logger.getLogger(NombresCompletosDAO.class.getName());
+    private static final Logger LOG = Logger.getLogger(Direccion.class.getName());
     private final IConexionBD MANEJADOR_CONEXIONES;
     
     public DireccionesDAO(IConexionBD MANEJADOR_CONEXIONES) {
