@@ -1,4 +1,3 @@
-
 package implementaciones;
 
 import dominio.Direccion;
@@ -13,11 +12,9 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import interfaces.IDireccionesDAO;
-
 public class DireccionesDAO implements IDireccionesDAO {
 
-    private static final Logger LOG = Logger.getLogger(Direccion.class.getName());
+    private static final Logger LOG = Logger.getLogger(NombresCompletosDAO.class.getName());
     private final IConexionBD MANEJADOR_CONEXIONES;
     
     public DireccionesDAO(IConexionBD MANEJADOR_CONEXIONES) {
@@ -43,7 +40,7 @@ public class DireccionesDAO implements IDireccionesDAO {
                 String calle = resultado.getString("calle");
                 String numeroExterior = resultado.getString("numeroExterior");
                 String numeroInterior = resultado.getString("numeroInterior");
-                Integer codigoPostal = resultado.getInt("codigoPostal");
+                String codigoPostal = resultado.getString("codigoPostal");
                 String colonia = resultado.getString("colonia");
                 
                 direccion = new Direccion(idDireccion, calle, numeroExterior, numeroInterior, codigoPostal, colonia);
@@ -70,7 +67,7 @@ public class DireccionesDAO implements IDireccionesDAO {
             comando.setString(1,  direccion.getCalle());
             comando.setString(2,  direccion.getNumeroExterior());
             comando.setString(3,  direccion.getNumeroInterior());
-            comando.setInt(4,  direccion.getCodigoPostal());
+            comando.setString(4,  direccion.getCodigoPostal());
             comando.setString(5,  direccion.getColonia());
             
             comando.executeUpdate();
