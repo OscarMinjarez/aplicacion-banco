@@ -11,6 +11,12 @@ public class Transaccion extends Operacion {
         super();
     }
 
+    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino) {
+        this.idCuentaOrigen = idCuentaOrigen;
+        this.idCuentaDestino = idCuentaDestino;
+    }
+
+    
     public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, LocalDate fechaHora, double monto) {
         super(fechaHora, monto);
         this.idCuentaOrigen = idCuentaOrigen;
