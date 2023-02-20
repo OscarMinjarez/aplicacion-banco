@@ -11,6 +11,11 @@ public class RetiroSinCuenta extends Operacion {
         super();
     }
 
+    public RetiroSinCuenta(Integer idCuenta, String contrasenia) {
+        this.idCuenta = idCuenta;
+        this.contrasenia = contrasenia;
+    }
+    
     public RetiroSinCuenta(Integer idCuenta, String contrasenia, LocalDate fechaHora, double monto) {
         super(fechaHora, monto);
         this.idCuenta = idCuenta;

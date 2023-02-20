@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
@@ -5,6 +6,7 @@
 package interfaces;
 
 import dominio.Transaccion;
+import excepciones.PersistenciaException;
 
 /**
  *
@@ -12,10 +14,10 @@ import dominio.Transaccion;
  */
 public interface ITransaccionesDAO {
 
-    public Transaccion consultar(Integer id);
+    public Transaccion consultar(Integer id)throws PersistenciaException;
 
-    public Transaccion Insertar (Transaccion transaccion);
+    public Transaccion Insertar (Transaccion transaccion)throws PersistenciaException;
 
-    public Transaccion eliminar(Integer id);
+    public Transaccion eliminar(Integer id)throws PersistenciaException;
 
 }

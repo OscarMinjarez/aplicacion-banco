@@ -71,8 +71,7 @@ public class ClientesDAO implements IClientesDAO {
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
                 PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
-                Statement.RETURN_GENERATED_KEYS
-                );
+                Statement.RETURN_GENERATED_KEYS);
         ) {
             comando.setInt(1, cliente.getIdNombre());
             comando.setInt(2, cliente.getIdDireccion());
