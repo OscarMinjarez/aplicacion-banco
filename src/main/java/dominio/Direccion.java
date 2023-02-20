@@ -8,13 +8,13 @@ public class Direccion {
     private String calle;
     private String numeroExterior;
     private String numeroInterior;
-    private Integer codigoPostal;
+    private String codigoPostal;
     private String colonia;
 
     public Direccion() {
     }
 
-    public Direccion(String calle, String numeroExterior, String numeroInterior, Integer codigoPostal, String colonia) {
+    public Direccion(String calle, String numeroExterior, String numeroInterior, String codigoPostal, String colonia) {
         this.calle = calle;
         this.numeroExterior = numeroExterior;
         this.numeroInterior = numeroInterior;
@@ -22,7 +22,7 @@ public class Direccion {
         this.colonia = colonia;
     }
 
-    public Direccion(Integer idDireccion, String calle, String numeroExterior, String numeroInterior, Integer codigoPostal, String colonia) {
+    public Direccion(Integer idDireccion, String calle, String numeroExterior, String numeroInterior, String codigoPostal, String colonia) {
         this.idDireccion = idDireccion;
         this.calle = calle;
         this.numeroExterior = numeroExterior;
@@ -63,11 +63,11 @@ public class Direccion {
         this.numeroInterior = numeroInterior;
     }
 
-    public Integer getCodigoPostal() {
+    public String getCodigoPostal() {
         return codigoPostal;
     }
 
-    public void setCodigoPostal(Integer codigoPostal) {
+    public void setCodigoPostal(String codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
 

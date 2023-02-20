@@ -12,6 +12,7 @@ import dominio.NombreCompleto;
 import excepciones.PersistenciaException;
 import interfaces.IDireccionesDAO;
 import interfaces.INombresCompletosDAO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,29 +35,53 @@ public class RegistrarCliente extends javax.swing.JFrame {
         initComponents();
     }
     
-    private NombreCompleto extraerDatosNombreCompleto() {
+    private NombreCompleto extraerDatosNombreCompleto() throws PersistenciaException {
         String nombres = this.txtNombre.getText();
         String apellidoPaterno = this.txtApellidoPaterno.getText();
         String apellidoMaterno = this.txtApellidoMaterno.getText();
         
+        if (nombres.isBlank() || apellidoPaterno.isBlank()) {
+            throw new PersistenciaException("Campos necesarios vacíos.");
+        }
+        
         return new NombreCompleto(nombres, apellidoPaterno, apellidoMaterno);
     }
     
-    private Direccion extraerDatosDireccion() {
+    private Direccion extraerDatosDireccion() throws PersistenciaException {
         String calle = this.txtCalle.getText();
         String numeroExterior = this.txtNumeroExterior.getText();
         String numeroInterior = this.txtNumeroInterior.getText();
-        Integer codigoPostal = Integer.parseInt(this.txtCodigoPostal.getText());
+        String codigoPostal = this.txtCodigoPostal.getText();
         String colonia = this.txtColonia.getText();
+        
+        if (
+            calle.isBlank() ||
+            numeroExterior.isBlank() ||
+            codigoPostal.isBlank() ||
+            colonia.isBlank()
+        ) {
+            throw new PersistenciaException("Campos necesarios vacíos.");
+        }
         
         return new Direccion(calle, numeroExterior, numeroInterior, codigoPostal, colonia);
     }
     
-    private Cliente extraerDatosCliente() {
+    private Cliente extraerDatosCliente() throws PersistenciaException {
         String fechaDeNacimiento = this.txtAnio.getText() + "/" + this.txtMes.getText() + "/" + this.txtDia.getText();
         String telefono = this.txtNumeroTelefonico.getText();
         String nombreUsuario = this.txtNombreUsuario.getText();
         String contrasenia = this.txtContrasenia.getText();
+        
+        if (
+            this.txtAnio.getText().isBlank() ||
+            this.txtMes.getText().isBlank() ||
+            this.txtMes.getText().isBlank() ||
+            telefono.isBlank() ||
+            nombreUsuario.isBlank() ||
+            contrasenia.isBlank()
+        ) {
+            throw new PersistenciaException("Campos necesarios vacíos.");
+        }
         
         return new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, contrasenia);
     }
@@ -64,22 +89,23 @@ public class RegistrarCliente extends javax.swing.JFrame {
     private void guardarClienteEnBaseDeDatos() {
         try {
             NombreCompleto nombreCompleto = this.extraerDatosNombreCompleto();
+            Direccion direccion = this.extraerDatosDireccion();
+            Cliente cliente = this.extraerDatosCliente();
+            
             NombreCompleto nombreCompletoGuardado = this.nombresCompletosDAO.insertar(new NombreCompleto(
                     nombreCompleto.getNombres(),
                     nombreCompleto.getApellidoPaterno(),
                     nombreCompleto.getApellidoMaterno()
             ));
             
-            Direccion direccion = this.extraerDatosDireccion();
             Direccion direccionGuardada = this.direccionesDAO.insertar(new Direccion(
                     direccion.getCalle(),
                     direccion.getNumeroExterior(),
                     direccion.getNumeroInterior(),
-                    direccion.getIdDireccion(),
+                    direccion.getCodigoPostal(),
                     direccion.getColonia()
             ));
             
-            Cliente cliente = this.extraerDatosCliente();
             Cliente clienteGuardado = this.clientesDAO.insertar(new Cliente(
                     nombreCompletoGuardado.getIdNombre(),
                     direccionGuardada.getIdDireccion(),
@@ -88,9 +114,19 @@ public class RegistrarCliente extends javax.swing.JFrame {
                     cliente.getUsuario(),
                     cliente.getContrasenia()
             ));
-        } catch (PersistenciaException e) {
             
+            this.mostrarMensajeClienteGuardado(nombreCompleto);
+        } catch (PersistenciaException e) {
+            this.mostrarErrorAlGuardarCliente(e.getMessage());
         }
+    }
+    
+    private void mostrarMensajeClienteGuardado(NombreCompleto nombreCompleto){
+        JOptionPane.showConfirmDialog(this, "!Bienvenido " + nombreCompleto.getNombres() + "!", "Éxito", JOptionPane.DEFAULT_OPTION);
+    }
+    
+    private void mostrarErrorAlGuardarCliente(String msg){
+        JOptionPane.showMessageDialog(this, "No pudimos crear tu cuenta, intenta otra vez.\n" + msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -143,6 +179,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         tituloRegistrar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         tituloRegistrar.setText("Registrar");
@@ -172,7 +209,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
             }
         });
 
-        tituloApellidoMaterno.setText("Apellido materno:");
+        tituloApellidoMaterno.setText("Apellido materno (Opcional):");
 
         txtApellidoMaterno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,7 +233,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
                     .addGroup(panelDatosPersonalesLayout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(tituloNombre)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelDatosPersonalesLayout.setVerticalGroup(
             panelDatosPersonalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,7 +389,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
             }
         });
 
-        tituloNumeroInterior.setText("Número interior:");
+        tituloNumeroInterior.setText("Número interior: (opcional)");
 
         txtNumeroInterior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,27 +486,33 @@ public class RegistrarCliente extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tituloDatosPersonales)
-                        .addGap(50, 50, 50)
-                        .addComponent(tituloFechaDeNacimiento)
-                        .addGap(59, 59, 59)
-                        .addComponent(tituloUsuario))
-                    .addComponent(panelDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(tituloRegistrar)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelDatosPersonales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(tituloDatosPersonales)
+                            .addComponent(panelDatosPersonales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(20, 20, 20)
-                        .addComponent(panelFechaDeNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(panelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRegistrarse)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(tituloFechaDeNacimiento)
+                            .addComponent(panelFechaDeNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(tituloUsuario))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(panelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.CENTER)
+                            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                                .addComponent(btnCancelar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRegistrarse))
+                            .addComponent(panelDireccion, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tituloRegistrar, javax.swing.GroupLayout.Alignment.CENTER))))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(

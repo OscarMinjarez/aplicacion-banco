@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS banco;
+
 CREATE DATABASE banco;
 
 USE banco;
@@ -16,7 +18,7 @@ CREATE TABLE Direcciones (
     calle VARCHAR(100) NOT NULL,
     numeroExterior VARCHAR(10) NOT NULL,
     numeroInterior VARCHAR(10),
-    codigoPostal INT NOT NULL,
+    codigoPostal VARCHAR(5) NOT NULL,
     colonia VARCHAR(100) NOT NULL
 );
 
