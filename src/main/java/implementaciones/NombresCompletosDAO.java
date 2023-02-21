@@ -100,8 +100,8 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
 
     @Override
     public NombreCompleto actualizar(Integer id, NombreCompleto nuevoNombreCompleto) throws PersistenciaException {
-        String codigoSQL = "UPDATE NombresCompletos SET idNombreCompleto = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ? "
-                + " FROM NombreCompleto WHERE idNombreCompleto = ?";
+        String codigoSQL = "UPDATE NombresCompletos SET nombres=?, apellidoPaterno=?, apellidoMaterno=? "
+                + "WHERE idNombreCompleto=?";
         try (
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
@@ -110,16 +110,12 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
             comando.setString(1, nuevoNombreCompleto.getNombres());
             comando.setString(2, nuevoNombreCompleto.getApellidoPaterno());
             comando.setString(3, nuevoNombreCompleto.getApellidoMaterno());
-            comando.setInt(4, nuevoNombreCompleto.getIdNombre());
+            comando.setInt(4, id);
 
             comando.executeLargeUpdate();
 
-            if (comando.execute()) {
-                return nuevoNombreCompleto;
-            }
-            
-            LOG.log(Level.WARNING, "Se inserto la direccion pero no se genero id.");
-            throw new PersistenciaException("Se inserto la direccion pero no se genero id.");
+            nuevoNombreCompleto.setIdNombre(id);
+            return nuevoNombreCompleto;
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
             throw new PersistenciaException("No se pudo insertar el nombre completo: " + e.getMessage());
