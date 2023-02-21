@@ -6,8 +6,6 @@ import excepciones.PersistenciaException;
 public interface INombresCompletosDAO {
 
     public NombreCompleto consultar(Integer id) throws PersistenciaException;
-    
-    public NombreCompleto consultarPorIdCliente(Integer idCliente) throws PersistenciaException;
 
     public NombreCompleto insertar(NombreCompleto nombreCompleto) throws PersistenciaException;
 

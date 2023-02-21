@@ -48,31 +48,6 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
             throw new PersistenciaException("No existe el nombre completo consultado: " + e.getMessage());
         }
     }
-    
-    @Override
-    public NombreCompleto consultarPorIdCliente(Integer idCliente) throws PersistenciaException {
-        String codigoSQL = "SELECT * FROM Clientes WHERE idCliente = ?";
-        
-        try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
-            comando.setInt(1, idCliente);
-            ResultSet resultado = comando.executeQuery();
-
-            if (resultado.next()) {
-                Integer idNombreCompleto = resultado.getInt("idNombreCompleto");
-                String nombres = resultado.getString("nombres");
-                String apellidoPaterno = resultado.getString("apellidoPaterno");
-                String apellidoMaterno = resultado.getString("apellidoMaterno");
-
-                return new NombreCompleto(idNombreCompleto, nombres, apellidoPaterno, apellidoMaterno);
-            }
-
-            return null;
-        } catch (SQLException ex) {
-            LOG.log(Level.WARNING, ex.getMessage());
-            throw new PersistenciaException("No existe el nombre completo a consultar" + ex.getMessage());
-        }
-    }
 
     @Override
     public NombreCompleto insertar(NombreCompleto nombreCompleto) throws PersistenciaException {

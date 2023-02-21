@@ -50,7 +50,6 @@ public class PantallaInicio extends javax.swing.JFrame {
         btnRetiroSinCuenta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
         setResizable(false);
 
         titulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N

@@ -7,7 +7,10 @@ package presentacion;
 import dominio.Cliente;
 import dominio.Direccion;
 import dominio.NombreCompleto;
+import excepciones.PersistenciaException;
+import implementaciones.ClientesDAO;
 import interfaces.IClientesDAO;
+import interfaces.IConexionBD;
 import interfaces.IDireccionesDAO;
 import interfaces.INombresCompletosDAO;
 import java.awt.Frame;
@@ -41,13 +44,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.clientesDAO = clientesDAO;
         this.nombresCompletosDAO = nombresCompletosDAO;
         this.direccionesDAO = direccionesDAO;
-        this.actualizarTituloNombreCliente();
         initComponents();
     }
     
-    public PantallaPrincipal(Cliente cliente, NombreCompleto nombreCompleto) {
-        this.cliente = cliente;
-        this.nombreCompleto = nombreCompleto;
+    public PantallaPrincipal(Integer idCliente, IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO) throws PersistenciaException {
+        this.clientesDAO = clientesDAO;
+        this.cliente = clientesDAO.consultar(idCliente);
+        this.nombreCompleto = nombresCompletosDAO.consultar(this.cliente.getIdNombre());
         initComponents();
     }
 
@@ -65,14 +68,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnCerrarSesion = new javax.swing.JButton();
         btnTransferencia = new javax.swing.JButton();
         btnRetiroSinCuenta = new javax.swing.JButton();
-        btnActualizarMisDatos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnPaginaRetirosSinCuenta = new javax.swing.JButton();
         btnPaginaTransferencias = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
         setResizable(false);
 
         tituloNombreCliente.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -98,13 +99,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnRetiroSinCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRetiroSinCuentaActionPerformed(evt);
-            }
-        });
-
-        btnActualizarMisDatos.setText("Actualizar mis datos");
-        btnActualizarMisDatos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarMisDatosActionPerformed(evt);
             }
         });
 
@@ -150,10 +144,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                                 .addComponent(btnRetiroSinCuenta)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCerrarSesion))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnActualizarMisDatos)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(btnPaginaTransferencias)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnPaginaRetirosSinCuenta))
@@ -177,7 +169,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnActualizarMisDatos)
                     .addComponent(btnPaginaRetirosSinCuenta)
                     .addComponent(btnPaginaTransferencias))
                 .addContainerGap())
@@ -187,12 +178,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void actualizarTituloNombreCliente() {
-        this.tituloNombreCliente.setText(this.nombreCompleto.getNombres() + " " + this.nombreCompleto.getApellidoPaterno());
-    }
     
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferenciaActionPerformed
@@ -203,12 +191,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRetiroSinCuentaActionPerformed
 
-    private void btnActualizarMisDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarMisDatosActionPerformed
-        this.setVisible(false);
-    }//GEN-LAST:event_btnActualizarMisDatosActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizarMisDatos;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnPaginaRetirosSinCuenta;
     private javax.swing.JButton btnPaginaTransferencias;

@@ -12,7 +12,9 @@ import dominio.NombreCompleto;
 import excepciones.PersistenciaException;
 import interfaces.IDireccionesDAO;
 import interfaces.INombresCompletosDAO;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
+import utils.Encriptador;
 import utils.ValidacionDatos;
 
 /**
@@ -131,7 +133,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
             throw new PersistenciaException("Credenciales invalidas.");
         }
         
-        this.cliente = new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, contrasenia);
+        this.cliente = new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, Encriptador.encriptar(contrasenia));
         
         return this.cliente;
     }
@@ -172,13 +174,30 @@ public class RegistrarCliente extends javax.swing.JFrame {
     }
     
     private void mostrarMensajeClienteGuardado(NombreCompleto nombreCompleto){
-        JOptionPane.showConfirmDialog(this, "!Bienvenido " + nombreCompleto.getNombres() + "!", "Éxito", JOptionPane.DEFAULT_OPTION);
+        JOptionPane.showConfirmDialog(this, "!Bienvenido " + nombreCompleto.getNombres() + "!\nYa puede iniciar sesión. :)", "Éxito", JOptionPane.DEFAULT_OPTION);
     }
     
     private void mostrarErrorAlGuardarCliente(String msg){
         JOptionPane.showMessageDialog(this, "No pudimos crear tu cuenta, intenta otra vez.\n" + msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    private void limpiarCampos() {
+        this.txtAnio.setText("");
+        this.txtApellidoMaterno.setText("");
+        this.txtApellidoPaterno.setText("");
+        this.txtCalle.setText("");
+        this.txtCodigoPostal.setText("");
+        this.txtColonia.setText("");
+        this.txtContrasenia.setText("");
+        this.txtDia.setText("");
+        this.txtMes.setText("");
+        this.txtNombre.setText("");
+        this.txtNombreUsuario.setText("");
+        this.txtNumeroExterior.setText("");
+        this.txtNumeroInterior.setText("");
+        this.txtNumeroTelefonico.setText("");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -229,7 +248,6 @@ public class RegistrarCliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
         setResizable(false);
 
         tituloRegistrar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -537,32 +555,35 @@ public class RegistrarCliente extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(22, 22, 22)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(tituloDatosPersonales)
+                                .addComponent(panelDatosPersonales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(20, 20, 20)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(tituloFechaDeNacimiento)
+                                .addComponent(panelFechaDeNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(65, 65, 65)
+                                    .addComponent(tituloUsuario))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(20, 20, 20)
+                                    .addComponent(panelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                            .addGap(39, 39, 39)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.CENTER)
+                                .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                                    .addComponent(btnCancelar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnRegistrarse))
+                                .addComponent(panelDireccion, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(tituloDatosPersonales)
-                            .addComponent(panelDatosPersonales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(tituloFechaDeNacimiento)
-                            .addComponent(panelFechaDeNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(tituloUsuario))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(panelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.CENTER)
-                            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
-                                .addComponent(btnCancelar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRegistrarse))
-                            .addComponent(panelDireccion, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tituloRegistrar, javax.swing.GroupLayout.Alignment.CENTER))))
+                        .addGap(211, 211, 211)
+                        .addComponent(tituloRegistrar)))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -597,8 +618,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         this.guardarClienteEnBaseDeDatos();
-        PantallaPrincipal principal = new PantallaPrincipal(this.cliente, this.nombreCompleto);
-        principal.setVisible(true);
+        this.limpiarCampos();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

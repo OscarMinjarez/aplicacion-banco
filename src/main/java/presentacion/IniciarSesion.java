@@ -61,7 +61,6 @@ public class IniciarSesion extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
         setResizable(false);
 
         tituloIniciarSesion.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -172,7 +171,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         }
         
         try {
-            nombre = this.nombresCompletosDAO.consultarPorIdCliente(cliente.getIdCliente());
+            nombre = this.nombresCompletosDAO.consultar(cliente.getIdCliente());
         } catch (PersistenciaException ex) {
             Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -180,9 +179,15 @@ public class IniciarSesion extends javax.swing.JFrame {
         if (cliente == null) {
             this.mostrarErrorAlNoPoderIniciarSesion("Usuario o contraseña incorrectas.");
         } else if (cliente.getContrasenia().equals(contrasenia) && nombre != null) {
-            inicio = new PantallaPrincipal(cliente, nombre);
+            try {
+                inicio = new PantallaPrincipal(cliente.getIdCliente(), this.clientesDAO, this.nombresCompletosDAO);
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
+            }
             inicio.setVisible(true);
             this.setVisible(false);
+        } else {
+            this.mostrarErrorAlNoPoderIniciarSesion("Usuario o contraseña incorrectas.");
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
