@@ -21,46 +21,50 @@ import java.util.logging.Logger;
  *
  * @author naely
  */
-public class TransaccionesDAO implements ITransaccionesDAO {
+public class TransferenciasDAO implements ITransaccionesDAO {
 
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IConexionBD MANEJADOR_CONEXIONES;
 
-    public TransaccionesDAO(IConexionBD MANEJADOR_CONEXIONES) {
+    public TransferenciasDAO(IConexionBD MANEJADOR_CONEXIONES) {
         this.MANEJADOR_CONEXIONES = MANEJADOR_CONEXIONES;
     }
 
     @Override
     public Transaccion consultar(Integer id) throws PersistenciaException {
-        String codigoSQL = "SELECT idCuentaOrigen, idCuentaDestino"
-                + "FROM Transaccion WHERE idTransaccion = ?";
+        String codigoSQL = "SELECT folio, monto, fechaHora, idCuentaOrigen, idCuentaDestino "
+                + "FROM Transferencias WHERE folio = ?";
 
         try (
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); 
-                PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
+                PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+        ) {
             comando.setInt(1, id);
             ResultSet resultado = comando.executeQuery();
 
             Transaccion transaccion = null;
 
             if (resultado.next()) {
+                Integer folio = resultado.getInt("folio");
+                Double monto = resultado.getDouble("monto");
+                String fechaHora = resultado.getString("fechaHora");
                 Integer idCuentaOrigen = resultado.getInt("idCuentaOrigen");
                 Integer idCuentaDestino = resultado.getInt("idCuentaDestino");
 
-                transaccion = new Transaccion(idCuentaOrigen, idCuentaDestino);
+                transaccion = new Transaccion(idCuentaOrigen, idCuentaDestino, folio, fechaHora, monto);
             }
 
             return transaccion;
         } catch (SQLException ex) {
             LOG.log(Level.WARNING, ex.getMessage());
-            throw new PersistenciaException("No existe el cliente a consultar" + ex.getMessage());
+            throw new PersistenciaException("No existe la transferencia a consultar" + ex.getMessage());
         }
     }
 
     @Override
-    public Transaccion Insertar(Transaccion transaccion) throws PersistenciaException {
-        String codigoSQL = "INSERT INTO Transaccion (idCuentaOrigen, idCuentaDestino)"
-                + "VALUES (?,?)";
+    public Transaccion insertar(Transaccion transaccion) throws PersistenciaException {
+        String codigoSQL = "INSERT INTO Transferencias (idCuentaOrigen, idCuentaDestino, monto, fechaHora) "
+                + "VALUES (?,?,?,?)";
         try (
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); 
                 PreparedStatement comando = conexion.prepareStatement(
@@ -69,6 +73,8 @@ public class TransaccionesDAO implements ITransaccionesDAO {
 
             comando.setInt(1, transaccion.getIdCuentaOrigen());
             comando.setInt(2, transaccion.getIdCuentaDestino());
+            comando.setDouble(3, transaccion.getMonto());
+            comando.setString(4, transaccion.getFechaHora());
 
             comando.executeLargeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
@@ -80,10 +86,10 @@ public class TransaccionesDAO implements ITransaccionesDAO {
 
             }
 
-            LOG.log(Level.WARNING, "");
-            throw new PersistenciaException("");
+            LOG.log(Level.WARNING, "Se creo la transaccion pero no se genero el folio");
+            throw new PersistenciaException("Se creo la transaccion pero no se genero el folio");
         } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "");
+            LOG.log(Level.SEVERE, "No se pudo insertar la transaccion.");
             throw new PersistenciaException(ex.getMessage());
         }
 
@@ -91,7 +97,7 @@ public class TransaccionesDAO implements ITransaccionesDAO {
 
     @Override
     public Transaccion eliminar(Integer id) throws PersistenciaException {
-        String codigoSQL = "DELETE FROM Transacciones WHERE idTransaccion  = ?";
+        String codigoSQL = "DELETE FROM Transferencias WHERE folio  = ?";
 
         try {
             Connection conexion = MANEJADOR_CONEXIONES.crearConexion();

@@ -3,17 +3,10 @@
  *
  * @author naely
  */
-import dominio.Cliente;
-import dominio.Direccion;
-import dominio.NombreCompleto;
 import excepciones.PersistenciaException;
-import implementaciones.ClientesDAO;
 import implementaciones.ConexionBD;
-import implementaciones.DireccionesDAO;
-import implementaciones.NombresCompletosDAO;
 import interfaces.IConexionBD;
 import presentacion.PantallaInicio;
-import utils.ValidacionDatos;
 
 public class AplicacionBanco {
 

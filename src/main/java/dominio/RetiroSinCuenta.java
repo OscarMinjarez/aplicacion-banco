@@ -1,11 +1,10 @@
 package dominio;
 
-import java.time.LocalDate;
-
 public class RetiroSinCuenta extends Operacion {
 
     private Integer idCuenta;
     private String contrasenia;
+    private String estado;
 
     public RetiroSinCuenta() {
         super();
@@ -16,16 +15,18 @@ public class RetiroSinCuenta extends Operacion {
         this.contrasenia = contrasenia;
     }
     
-    public RetiroSinCuenta(Integer idCuenta, String contrasenia, LocalDate fechaHora, double monto) {
+    public RetiroSinCuenta(Integer idCuenta, String contrasenia, String fechaHora, double monto, String estado) {
         super(fechaHora, monto);
         this.idCuenta = idCuenta;
         this.contrasenia = contrasenia;
+        this.estado = estado;
     }
 
-    public RetiroSinCuenta(Integer idCuenta, String contrasenia, String folio, LocalDate fechaHora, double monto) {
+    public RetiroSinCuenta(Integer idCuenta, String contrasenia, Integer folio, String fechaHora, double monto, String estado) {
         super(folio, fechaHora, monto);
         this.idCuenta = idCuenta;
         this.contrasenia = contrasenia;
+        this.estado = estado;
     }
 
     public Integer getIdCuenta() {
@@ -44,8 +45,16 @@ public class RetiroSinCuenta extends Operacion {
         this.contrasenia = contrasenia;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + "RetiroSinCuenta{" + "idCuenta=" + idCuenta + ", contrasenia=" + contrasenia + '}';
+        return super.toString() + "RetiroSinCuenta{" + "idCuenta=" + idCuenta + ", contrasenia=" + contrasenia + ", estado=" + estado + '}';
     }
 }

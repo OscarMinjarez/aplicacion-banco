@@ -16,7 +16,7 @@ public interface ITransaccionesDAO {
 
     public Transaccion consultar(Integer id)throws PersistenciaException;
 
-    public Transaccion Insertar (Transaccion transaccion)throws PersistenciaException;
+    public Transaccion insertar (Transaccion transaccion)throws PersistenciaException;
 
     public Transaccion eliminar(Integer id)throws PersistenciaException;
 
