@@ -20,12 +20,12 @@ import java.util.logging.Logger;
  *
  * @author naely
  */
-public class TransferenciasDAO implements ITransaccionesDAO {
+public class TransaccionDAO implements ITransaccionesDAO {
 
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IConexionBD MANEJADOR_CONEXIONES;
 
-    public TransferenciasDAO(IConexionBD MANEJADOR_CONEXIONES) {
+    public TransaccionDAO(IConexionBD MANEJADOR_CONEXIONES) {
         this.MANEJADOR_CONEXIONES = MANEJADOR_CONEXIONES;
     }
 

@@ -9,11 +9,12 @@ import java.util.Objects;
 /**
  * Clase que guarda los clientes que entran en la base de datos.
  * 
- * @author Oscar
- * @author Naely
+ * @author Oscar Mijarez 231506
+ * @author Naely Morillon 229324
  */
 public class Cliente {
     
+    // Declaración de atributos
     private Integer idCliente;
     private Integer idNombre;
     private Integer idDireccion;
