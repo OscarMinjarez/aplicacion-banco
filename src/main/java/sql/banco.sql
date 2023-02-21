@@ -53,22 +53,22 @@ CREATE TABLE Transferencias (
     folio INT PRIMARY KEY AUTO_INCREMENT,
     monto DECIMAL(8 , 2 ) NOT NULL,
     fechaHora DATETIME NOT NULL,
+
     idCuentaOrigen INT NOT NULL,
-    FOREIGN KEY (idCuentaOrigen)
-        REFERENCES Cuentas (idCuenta),
+    FOREIGN KEY (idCuentaOrigen) REFERENCES Cuentas (idCuenta),
+
     idCuentaDestino INT NOT NULL,
-    FOREIGN KEY (idCuentaOrigen)
-        REFERENCES Cuentas (idCuenta)
+    FOREIGN KEY (idCuentaDestino) REFERENCES Cuentas (idCuenta)
 );
 
 #Tabla6
-CREATE TABLE RetiroSinCuenta (
+CREATE TABLE RetirosSinCuentas (
     folio INT PRIMARY KEY AUTO_INCREMENT,
-    contaseña VARCHAR(8) NOT NULL,
+    contrasenia VARCHAR(8) NOT NULL,
     monto DECIMAL(8 , 2 ) NOT NULL,
     fechaHora DATETIME NOT NULL,
     estado ENUM('cancelado', 'retirado', 'pendiente') NOT NULL,
+
     idCuenta INT NOT NULL,
-    FOREIGN KEY (idCuenta)
-        REFERENCES Cuentas (idCuenta)
+    FOREIGN KEY (idCuenta) REFERENCES Cuentas (idCuenta)
 );
