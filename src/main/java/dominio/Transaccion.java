@@ -1,7 +1,5 @@
 package dominio;
 
-import java.time.LocalDate;
-
 public class Transaccion extends Operacion {
 
     private Integer idCuentaOrigen;
@@ -17,13 +15,13 @@ public class Transaccion extends Operacion {
     }
 
     
-    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, LocalDate fechaHora, double monto) {
+    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, String fechaHora, double monto) {
         super(fechaHora, monto);
         this.idCuentaOrigen = idCuentaOrigen;
         this.idCuentaDestino = idCuentaDestino;
     }
 
-    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, String folio, LocalDate fechaHora, double monto) {
+    public Transaccion(Integer idCuentaOrigen, Integer idCuentaDestino, Integer folio, String fechaHora, double monto) {
         super(folio, fechaHora, monto);
         this.idCuentaOrigen = idCuentaOrigen;
         this.idCuentaDestino = idCuentaDestino;

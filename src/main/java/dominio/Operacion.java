@@ -5,37 +5,37 @@ import java.util.Objects;
 
 public class Operacion {
 
-    private String folio;
-    private LocalDate fechaHora;
+    private Integer folio;
+    private String fechaHora;
     private double monto;
 
     public Operacion() {
     }
 
-    public Operacion(LocalDate fechaHora, double monto) {
+    public Operacion(String fechaHora, double monto) {
         this.fechaHora = fechaHora;
         this.monto = monto;
     }
 
-    public Operacion(String folio, LocalDate fechaHora, double monto) {
+    public Operacion(Integer folio, String fechaHora, double monto) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.monto = monto;
     }
 
-    public String getFolio() {
+    public Integer getFolio() {
         return folio;
     }
 
-    public void setFolio(String folio) {
+    public void setFolio(Integer folio) {
         this.folio = folio;
     }
 
-    public LocalDate getFechaHora() {
+    public String getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDate fechaHora) {
+    public void setFechaHora(String fechaHora) {
         this.fechaHora = fechaHora;
     }
 

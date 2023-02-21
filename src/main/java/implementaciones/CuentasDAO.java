@@ -32,10 +32,12 @@ public class CuentasDAO implements ICuentasDAO {
 
     @Override
     public Cuenta consultar(Integer id) throws PersistenciaException {
-        String codigoSQL = "SELECT idCuenta, idCliente, numeroCuenta, fechaApertura, saldo"
-                + "FROM Consultar Where idCuenta = ?";
+        String codigoSQL = "SELECT idCuenta, idCliente, numeroCuenta, fechaApertura, saldo "
+                + "FROM Cuentas WHERE idCuenta = ?";
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+                PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+        ) {
             comando.setInt(1, id);
             ResultSet resultado = comando.executeQuery();
 
@@ -61,17 +63,18 @@ public class CuentasDAO implements ICuentasDAO {
 
     @Override
     public Cuenta insertar(Cuenta cuenta) throws PersistenciaException {
-        String codigoSQL = "INSERT INTO Cuenta (idCuenta, idCliente, numeroCuenta, fechaApertura, sado)"
-                + "VALUES (?,?,?,?,?";
+        String codigoSQL = "INSERT INTO Cuentas (numeroCuenta, fechaApertura, saldo, idCliente) "
+                + "VALUES (?,?,?,?)";
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+                PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
-                Statement.RETURN_GENERATED_KEYS);) {
-            comando.setInt(1, cuenta.getIdCuenta());
-            comando.setInt(2, cuenta.getIdCliente());
-            comando.setString(3, cuenta.getNumeroCuenta());
-            comando.setString(4, cuenta.getFechaApertura());
-            comando.setDouble(5, cuenta.getSaldo());
+                Statement.RETURN_GENERATED_KEYS);
+        ) {
+            comando.setString(1, cuenta.getNumeroCuenta());
+            comando.setString(2, cuenta.getFechaApertura());
+            comando.setDouble(3, cuenta.getSaldo());
+            comando.setInt(4, cuenta.getIdCliente());
 
             comando.executeLargeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
@@ -82,11 +85,11 @@ public class CuentasDAO implements ICuentasDAO {
                 return cuenta;
             }
 
-            LOG.log(Level.WARNING, "");
-            throw new PersistenciaException("");
+            LOG.log(Level.WARNING, "Se creo la cuenta pero no se genero el Id.");
+            throw new PersistenciaException("Se creo la cuenta pero no se genero el Id.");
         } catch (SQLException ex) {
             LOG.log(Level.WARNING, ex.getMessage());
-            throw new PersistenciaException("No existe la cuenta a consultar" + ex.getMessage());
+            throw new PersistenciaException("No se pudo insertar al cuenta.");
         }
     }
 
@@ -105,7 +108,7 @@ public class CuentasDAO implements ICuentasDAO {
             return cuentaBusca;
         } catch (SQLException ex) {
             LOG.log(Level.WARNING, ex.getMessage());
-            throw new PersistenciaException("No existe el nombre completo a eliminar: " + ex.getMessage());
+            throw new PersistenciaException("No existe la cuenta a eliminar: " + ex.getMessage());
         }
     }
 
