@@ -26,6 +26,10 @@ public class RegistrarCliente extends javax.swing.JFrame {
     private final INombresCompletosDAO nombresCompletosDAO;
     private final IDireccionesDAO direccionesDAO;
     
+    private Cliente cliente;
+    private NombreCompleto nombreCompleto;
+    private Direccion direccion;
+    
     /**
      * Creates new form RegistrarCliente
      */
@@ -33,6 +37,9 @@ public class RegistrarCliente extends javax.swing.JFrame {
         this.clientesDAO = clientesDAO;
         this.nombresCompletosDAO = nombresCompletosDAO;
         this.direccionesDAO = direccionesDAO;
+        this.cliente = null;
+        this.nombreCompleto = null;
+        this.direccion = null;
         initComponents();
     }
     
@@ -53,7 +60,9 @@ public class RegistrarCliente extends javax.swing.JFrame {
             throw new PersistenciaException("Datos inválidos o longitud máxima de caracteres.");
         }
         
-        return new NombreCompleto(nombres, apellidoPaterno, apellidoMaterno);
+        this.nombreCompleto = new NombreCompleto(nombres, apellidoPaterno, apellidoMaterno);
+        
+        return this.nombreCompleto;
     }
     
     private Direccion extraerDatosDireccion() throws PersistenciaException {
@@ -82,7 +91,9 @@ public class RegistrarCliente extends javax.swing.JFrame {
             throw new PersistenciaException("Datos inválidos o longitud máxima de caracteres.");
         }
         
-        return new Direccion(calle, numeroExterior, numeroInterior, codigoPostal, colonia);
+        this.direccion = new Direccion(calle, numeroExterior, numeroInterior, codigoPostal, colonia);
+        
+        return this.direccion;
     }
     
     private Cliente extraerDatosCliente() throws PersistenciaException {
@@ -120,7 +131,9 @@ public class RegistrarCliente extends javax.swing.JFrame {
             throw new PersistenciaException("Credenciales invalidas.");
         }
         
-        return new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, contrasenia);
+        this.cliente = new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, contrasenia);
+        
+        return this.cliente;
     }
     
     private void guardarClienteEnBaseDeDatos() {
@@ -216,6 +229,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
 
         tituloRegistrar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -578,10 +592,13 @@ public class RegistrarCliente extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         this.guardarClienteEnBaseDeDatos();
+        PantallaPrincipal principal = new PantallaPrincipal(this.cliente, this.nombreCompleto);
+        principal.setVisible(true);
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

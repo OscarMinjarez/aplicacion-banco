@@ -16,6 +16,8 @@ public interface IClientesDAO {
     
     
     public Cliente consultar(Integer id) throws PersistenciaException;
+    
+    public Cliente consultarPorUsuario(String usuario) throws PersistenciaException;
 
     public Cliente insertar(Cliente cliente)throws PersistenciaException;
 

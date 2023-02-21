@@ -7,7 +7,9 @@ package presentacion;
 import implementaciones.ClientesDAO;
 import implementaciones.DireccionesDAO;
 import implementaciones.NombresCompletosDAO;
+import interfaces.IClientesDAO;
 import interfaces.IConexionBD;
+import interfaces.INombresCompletosDAO;
 
 /**
  *
@@ -16,13 +18,18 @@ import interfaces.IConexionBD;
 public class PantallaInicio extends javax.swing.JFrame {
 
     private final IConexionBD manejadorConexiones;
+    private IClientesDAO clientesDAO;
+    private INombresCompletosDAO nombresCompletosDAO;
     
     /**
      * Creates new form PantallaInicio
      * @param manejadorConexiones
+     * @param nombresCompletosDAO
      */
     public PantallaInicio(IConexionBD manejadorConexiones) {
         this.manejadorConexiones = manejadorConexiones;
+        this.clientesDAO = new ClientesDAO(manejadorConexiones);
+        this.nombresCompletosDAO = new NombresCompletosDAO(manejadorConexiones);
         initComponents();
     }
 
@@ -43,6 +50,8 @@ public class PantallaInicio extends javax.swing.JFrame {
         btnRetiroSinCuenta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         titulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         titulo.setText("Bienvenido");
@@ -117,10 +126,12 @@ public class PantallaInicio extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSoyClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSoyClienteActionPerformed
-        // TODO add your handling code here:
+        IniciarSesion iniciarSesion = new IniciarSesion(clientesDAO, nombresCompletosDAO);
+        iniciarSesion.setVisible(true);
     }//GEN-LAST:event_btnSoyClienteActionPerformed
 
     private void btnNoSoyClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoSoyClienteActionPerformed

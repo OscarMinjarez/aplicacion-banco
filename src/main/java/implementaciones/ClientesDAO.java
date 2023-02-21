@@ -58,7 +58,34 @@ public class ClientesDAO implements IClientesDAO {
             LOG.log(Level.WARNING, ex.getMessage());
             throw new PersistenciaException("No existe el cliente a consultar" + ex.getMessage());
         }
+    }
+    
+    @Override
+    public Cliente consultarPorUsuario(String usuario) throws PersistenciaException {
+        String codigoSQL = "SELECT * FROM Clientes WHERE usuario = ?";
+        
+        try (
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
+            comando.setString(1, usuario);
+            ResultSet resultado = comando.executeQuery();
 
+            if (resultado.next()) {
+                Integer idCliente = resultado.getInt("idCliente");
+                Integer idNombre = resultado.getInt("idNombreCompleto");
+                Integer idDireccion = resultado.getInt("idDireccion");
+                String fechaNacimiento = resultado.getString("fechaNacimiento");
+                String telefono = resultado.getString("telefono");
+                String usuarioConsultado = resultado.getString("usuario");
+                String contrasenia = resultado.getString("contrasenia");
+
+                return new Cliente(idCliente, idNombre, idDireccion, fechaNacimiento, telefono, usuarioConsultado, contrasenia);
+            }
+
+            return null;
+        } catch (SQLException ex) {
+            LOG.log(Level.WARNING, ex.getMessage());
+            throw new PersistenciaException("No existe el cliente a consultar" + ex.getMessage());
+        }
     }
 
     @Override
@@ -114,7 +141,6 @@ public class ClientesDAO implements IClientesDAO {
         }
     }
 
- 
     @Override
     public Cliente actualizar(Integer id, Cliente actualizacionDatos) throws PersistenciaException {
         String codigoSQL = "UPDATE Clientes SET idCliente = ?, idNombre = ?, idDireccion = ?, fechaNacimiento = ?, telefono = ?, usuario = ?, contrasenia = ?"
@@ -143,5 +169,4 @@ public class ClientesDAO implements IClientesDAO {
             throw new PersistenciaException("No se pudo insertar el nombre completo: " + ex.getMessage());
         }
     }
-
 }
