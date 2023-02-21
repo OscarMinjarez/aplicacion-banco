@@ -117,4 +117,9 @@ public class ClientesDAO implements IClientesDAO {
 
         }
     }
+
+    @Override
+    public Cliente actualizar(Integer id) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

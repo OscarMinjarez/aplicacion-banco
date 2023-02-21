@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import dominio.Cliente;
 import dominio.RetiroSinCuenta;
 import excepciones.PersistenciaException;
 
@@ -14,10 +15,12 @@ import excepciones.PersistenciaException;
  */
 public interface IRetirosSinCuentasDAO {
 
-    public RetiroSinCuenta consultar(Integer id)throws PersistenciaException;
+    public RetiroSinCuenta consultar(Integer id) throws PersistenciaException;
 
-    public RetiroSinCuenta insertar(RetiroSinCuenta retiroSinCuenta)throws PersistenciaException;
+    public RetiroSinCuenta insertar(RetiroSinCuenta retiroSinCuenta) throws PersistenciaException;
 
-    public RetiroSinCuenta eliminar(Integer id)throws PersistenciaException;
+    public RetiroSinCuenta eliminar(Integer id) throws PersistenciaException;
+
+    public Cliente actualizar(Integer id) throws PersistenciaException;
 
 }

@@ -4,6 +4,7 @@
  */
 package implementaciones;
 
+import dominio.Cliente;
 import dominio.Cuenta;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
@@ -108,4 +109,15 @@ public class CuentasDAO implements ICuentasDAO {
         }
     }
 
+//    @Override
+//    public Cliente actualizar(Integer id) throws PersistenciaException {
+//       
+//        
+//    }
+
+        
+        
+        
+        
+    }
 }

@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import dominio.Cliente;
 import dominio.Transaccion;
 import excepciones.PersistenciaException;
 
@@ -14,10 +15,11 @@ import excepciones.PersistenciaException;
  */
 public interface ITransaccionesDAO {
 
-    public Transaccion consultar(Integer id)throws PersistenciaException;
+    public Transaccion consultar(Integer id) throws PersistenciaException;
 
-    public Transaccion Insertar (Transaccion transaccion)throws PersistenciaException;
+    public Transaccion Insertar(Transaccion transaccion) throws PersistenciaException;
 
-    public Transaccion eliminar(Integer id)throws PersistenciaException;
+    public Transaccion eliminar(Integer id) throws PersistenciaException;
 
+    public Cliente actualizar(Integer id) throws PersistenciaException;
 }

@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import dominio.Cliente;
 import dominio.Cuenta;
 import excepciones.PersistenciaException;
 
@@ -14,10 +15,12 @@ import excepciones.PersistenciaException;
  */
 public interface ICuentasDAO {
 
-    public Cuenta consultar(Integer id)throws PersistenciaException;
+    public Cuenta consultar(Integer id) throws PersistenciaException;
 
-    public Cuenta insertar(Cuenta cuenta)throws PersistenciaException;
+    public Cuenta insertar(Cuenta cuenta) throws PersistenciaException;
 
-    public Cuenta eliminar(Integer id)throws PersistenciaException;
+    public Cuenta eliminar(Integer id) throws PersistenciaException;
+
+    public Cliente actualizar(Integer id) throws PersistenciaException;
 
 }

@@ -20,6 +20,8 @@ public interface IClientesDAO {
     public Cliente insertar(Cliente cliente)throws PersistenciaException;
 
     public Cliente eliminar(Integer id)throws PersistenciaException;
+    
+    public Cliente actualizar(Integer id) throws PersistenciaException;
        
 }
 

@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import dominio.Cliente;
 import dominio.Direccion;
 import excepciones.PersistenciaException;
 
@@ -19,5 +20,7 @@ public interface IDireccionesDAO {
     public Direccion insertar(Direccion direccion) throws PersistenciaException;
 
     public Direccion eliminar(Integer id) throws PersistenciaException;
+
+    public Direccion actualizar(Direccion direccion) throws PersistenciaException;
 
 }
