@@ -8,12 +8,13 @@ import dominio.Cliente;
 import dominio.Direccion;
 import dominio.NombreCompleto;
 import excepciones.PersistenciaException;
-import implementaciones.ClientesDAO;
 import interfaces.IClientesDAO;
-import interfaces.IConexionBD;
+import interfaces.ICuentasDAO;
 import interfaces.IDireccionesDAO;
 import interfaces.INombresCompletosDAO;
-import java.awt.Frame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,34 +25,21 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private Cliente cliente;
     private NombreCompleto nombreCompleto;
     private Direccion direccion;
-    private IClientesDAO clientesDAO;
-    private INombresCompletosDAO nombresCompletosDAO;
-    private IDireccionesDAO direccionesDAO;
+    private final IClientesDAO clientesDAO;
+    private final INombresCompletosDAO nombresCompletosDAO = null;
+    private final IDireccionesDAO direccionesDAO = null;
+    private final ICuentasDAO cuentasDAO;
     
-    /**
-     * Creates new form PantallaPrincipal
-     * @param cliente
-     * @param nombreCompleto
-     * @param direccion
-     * @param clientesDAO
-     * @param nombresCompletosDAO
-     * @param direccionesDAO
-     */
-    public PantallaPrincipal(Cliente cliente, NombreCompleto nombreCompleto, Direccion direccion, IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO, IDireccionesDAO direccionesDAO) {
-        this.cliente = cliente;
-        this.nombreCompleto = nombreCompleto;
-        this.direccion = direccion;
-        this.clientesDAO = clientesDAO;
-        this.nombresCompletosDAO = nombresCompletosDAO;
-        this.direccionesDAO = direccionesDAO;
-        initComponents();
-    }
-    
-    public PantallaPrincipal(Integer idCliente, IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO) throws PersistenciaException {
+    public PantallaPrincipal(Integer idCliente, IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO, ICuentasDAO cuentasDAO) throws PersistenciaException {
         this.clientesDAO = clientesDAO;
         this.cliente = clientesDAO.consultar(idCliente);
         this.nombreCompleto = nombresCompletosDAO.consultar(this.cliente.getIdNombre());
+        this.cuentasDAO = cuentasDAO;
         initComponents();
+    }
+    
+    private void mostrarMensajeDeServicio() {
+        JOptionPane.showConfirmDialog(this, "Lo sentimos :(\nEstamos trabajando para usted.\nGracias por su comprensión.", "Éxito", JOptionPane.DEFAULT_OPTION);
     }
 
     /**
@@ -72,6 +60,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnPaginaRetirosSinCuenta = new javax.swing.JButton();
         btnPaginaTransferencias = new javax.swing.JButton();
+        btnAgregarCuenta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -124,8 +113,25 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         btnPaginaRetirosSinCuenta.setText("Retiros sin cuenta");
+        btnPaginaRetirosSinCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaginaRetirosSinCuentaActionPerformed(evt);
+            }
+        });
 
         btnPaginaTransferencias.setText("Transferencias");
+        btnPaginaTransferencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaginaTransferenciasActionPerformed(evt);
+            }
+        });
+
+        btnAgregarCuenta.setText("Añadir otra cuenta");
+        btnAgregarCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarCuentaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,32 +139,39 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(tituloBienvenida)
-                            .addComponent(tituloNombreCliente)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnTransferencia)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRetiroSinCuenta)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCerrarSesion))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnAgregarCuenta)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(tituloBienvenida)
+                                .addComponent(tituloNombreCliente)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnTransferencia)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnRetiroSinCuenta)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnCerrarSesion))
+                        .addGroup(layout.createSequentialGroup()
                             .addComponent(btnPaginaTransferencias)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnPaginaRetirosSinCuenta))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnPaginaRetirosSinCuenta)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCerrarSesion)
-                    .addComponent(tituloBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCerrarSesion)
+                            .addComponent(tituloBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAgregarCuenta)))
                 .addGap(35, 35, 35)
                 .addComponent(tituloNombreCliente)
                 .addGap(42, 42, 42)
@@ -184,14 +197,33 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferenciaActionPerformed
-        // TODO add your handling code here:
+        PantallaTransferencia transferencia = null;
+        try {
+            transferencia = new PantallaTransferencia(cuentasDAO, cliente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        transferencia.setVisible(true);
     }//GEN-LAST:event_btnTransferenciaActionPerformed
 
     private void btnRetiroSinCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroSinCuentaActionPerformed
-        // TODO add your handling code here:
+        this.mostrarMensajeDeServicio();
     }//GEN-LAST:event_btnRetiroSinCuentaActionPerformed
 
+    private void btnAgregarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCuentaActionPerformed
+        this.mostrarMensajeDeServicio();
+    }//GEN-LAST:event_btnAgregarCuentaActionPerformed
+
+    private void btnPaginaTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaginaTransferenciasActionPerformed
+        this.mostrarMensajeDeServicio();
+    }//GEN-LAST:event_btnPaginaTransferenciasActionPerformed
+
+    private void btnPaginaRetirosSinCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaginaRetirosSinCuentaActionPerformed
+        this.mostrarMensajeDeServicio();
+    }//GEN-LAST:event_btnPaginaRetirosSinCuentaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarCuenta;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnPaginaRetirosSinCuenta;
     private javax.swing.JButton btnPaginaTransferencias;

@@ -5,9 +5,9 @@
  */
 package interfaces;
 
-import dominio.Cliente;
 import dominio.Cuenta;
 import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  *
@@ -22,5 +22,6 @@ public interface ICuentasDAO {
     public Cuenta eliminar(Integer id) throws PersistenciaException;
 
     public Cuenta actualizar(Integer id,Cuenta actualizacionCuenta) throws PersistenciaException;
-
+    
+    public List<Cuenta> consultarCuentas(Integer idCliente) throws PersistenciaException;
 }

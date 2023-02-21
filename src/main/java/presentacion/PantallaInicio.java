@@ -5,10 +5,12 @@
 package presentacion;
 
 import implementaciones.ClientesDAO;
+import implementaciones.CuentasDAO;
 import implementaciones.DireccionesDAO;
 import implementaciones.NombresCompletosDAO;
 import interfaces.IClientesDAO;
 import interfaces.IConexionBD;
+import interfaces.ICuentasDAO;
 import interfaces.INombresCompletosDAO;
 
 /**
@@ -18,8 +20,9 @@ import interfaces.INombresCompletosDAO;
 public class PantallaInicio extends javax.swing.JFrame {
 
     private final IConexionBD manejadorConexiones;
-    private IClientesDAO clientesDAO;
-    private INombresCompletosDAO nombresCompletosDAO;
+    private final IClientesDAO clientesDAO;
+    private final INombresCompletosDAO nombresCompletosDAO;
+    private final ICuentasDAO cuentasDAO;
     
     /**
      * Creates new form PantallaInicio
@@ -30,6 +33,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         this.manejadorConexiones = manejadorConexiones;
         this.clientesDAO = new ClientesDAO(manejadorConexiones);
         this.nombresCompletosDAO = new NombresCompletosDAO(manejadorConexiones);
+        this.cuentasDAO = new CuentasDAO(manejadorConexiones);
         initComponents();
     }
 
@@ -129,7 +133,7 @@ public class PantallaInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSoyClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSoyClienteActionPerformed
-        IniciarSesion iniciarSesion = new IniciarSesion(clientesDAO, nombresCompletosDAO);
+        IniciarSesion iniciarSesion = new IniciarSesion(clientesDAO, nombresCompletosDAO, cuentasDAO);
         iniciarSesion.setVisible(true);
     }//GEN-LAST:event_btnSoyClienteActionPerformed
 

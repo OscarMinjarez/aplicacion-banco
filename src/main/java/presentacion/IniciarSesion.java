@@ -8,6 +8,7 @@ import dominio.Cliente;
 import dominio.NombreCompleto;
 import excepciones.PersistenciaException;
 import interfaces.IClientesDAO;
+import interfaces.ICuentasDAO;
 import interfaces.INombresCompletosDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,15 +24,17 @@ public class IniciarSesion extends javax.swing.JFrame {
     private static final Logger LOG = Logger.getLogger(RegistrarCliente.class.getName());
     private final IClientesDAO clientesDAO;
     private final INombresCompletosDAO nombresCompletosDAO;
+    private final ICuentasDAO cuentasDAO;
     
     /**
      * Creates new form IniciarSesion
      * @param clientesDAO
      * @param nombresCompletosDAO
      */
-    public IniciarSesion(IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO) {
+    public IniciarSesion(IClientesDAO clientesDAO, INombresCompletosDAO nombresCompletosDAO, ICuentasDAO cuentasDAO) {
         this.clientesDAO = clientesDAO;
         this.nombresCompletosDAO = nombresCompletosDAO;
+        this.cuentasDAO = cuentasDAO;
         initComponents();
     }
 
@@ -180,7 +183,7 @@ public class IniciarSesion extends javax.swing.JFrame {
             this.mostrarErrorAlNoPoderIniciarSesion("Usuario o contraseña incorrectas.");
         } else if (cliente.getContrasenia().equals(contrasenia) && nombre != null) {
             try {
-                inicio = new PantallaPrincipal(cliente.getIdCliente(), this.clientesDAO, this.nombresCompletosDAO);
+                inicio = new PantallaPrincipal(cliente.getIdCliente(), this.clientesDAO, this.nombresCompletosDAO, this.cuentasDAO);
             } catch (PersistenciaException ex) {
                 Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
             }

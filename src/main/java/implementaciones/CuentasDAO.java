@@ -4,6 +4,8 @@ import dominio.Cuenta;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
 import interfaces.ICuentasDAO;
+import java.util.LinkedList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.ConfiguracionPaginado;
 
 /**
  * Clase que se encarga de se encarga de todas las consultas a la tabla Cuentas.
@@ -151,6 +154,37 @@ public class CuentasDAO implements ICuentasDAO {
         } catch (SQLException ex) {
             LOG.log(Level.SEVERE, ex.getMessage());
             throw new PersistenciaException("No se pudo insertar el nombre completo: " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public List<Cuenta> consultarCuentas(Integer idCliente) throws PersistenciaException {
+        String codigoSQL = "SELECT idCuenta, idCliente, numeroCuenta, fechaApertura, saldo "
+                + "FROM Cuentas WHERE idCliente = ?";
+        List<Cuenta> listaCuentas = new LinkedList<>();
+        
+        try (
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
+                PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            ) {
+            
+            comando.setInt(1, idCliente);
+            ResultSet resultado = comando.executeQuery();
+            
+            while (resultado.next()) {
+                Integer idCuenta = resultado.getInt("idCuenta");
+                Integer idClienteConsultado = resultado.getInt("idCliente");
+                String numeroCuenta = resultado.getString("numeroCuenta");
+                String fechaApertura = resultado.getString("fechaApertura");
+                double saldo = resultado.getDouble("saldo");
+                Cuenta cuenta = new Cuenta(idCuenta, idClienteConsultado, numeroCuenta, fechaApertura, 0);
+                listaCuentas.add(cuenta);
+            }
+            
+            return listaCuentas;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar la lista de cuentas.");
         }
     }
 }

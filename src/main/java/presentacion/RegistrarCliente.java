@@ -27,11 +27,11 @@ public class RegistrarCliente extends javax.swing.JFrame {
     private final IClientesDAO clientesDAO;
     private final INombresCompletosDAO nombresCompletosDAO;
     private final IDireccionesDAO direccionesDAO;
-    
+
     private Cliente cliente;
     private NombreCompleto nombreCompleto;
     private Direccion direccion;
-    
+
     /**
      * Creates new form RegistrarCliente
      */
@@ -44,141 +44,139 @@ public class RegistrarCliente extends javax.swing.JFrame {
         this.direccion = null;
         initComponents();
     }
-    
+
     private NombreCompleto extraerDatosNombreCompleto() throws PersistenciaException {
         String nombres = this.txtNombre.getText();
         String apellidoPaterno = this.txtApellidoPaterno.getText();
         String apellidoMaterno = this.txtApellidoMaterno.getText();
-        
+
         if (nombres.isBlank() || apellidoPaterno.isBlank()) {
             throw new PersistenciaException("Campos necesarios vacíos.");
         }
-        
-        if (
-            !ValidacionDatos.validarSoloLetrasYLongitud(nombres, 50) ||
-            !ValidacionDatos.validarSoloLetrasYLongitud(apellidoPaterno, 50) ||
-            !ValidacionDatos.validarSoloLetrasYLongitud(apellidoMaterno, 50)
-        ) {
+
+        if (!ValidacionDatos.validarSoloLetrasYLongitud(nombres, 50)
+                || !ValidacionDatos.validarSoloLetrasYLongitud(apellidoPaterno, 50)
+                || !ValidacionDatos.validarSoloLetrasYLongitud(apellidoMaterno, 50)) {
             throw new PersistenciaException("Datos inválidos o longitud máxima de caracteres.");
         }
-        
+
         this.nombreCompleto = new NombreCompleto(nombres, apellidoPaterno, apellidoMaterno);
-        
+
         return this.nombreCompleto;
     }
-    
+
     private Direccion extraerDatosDireccion() throws PersistenciaException {
         String calle = this.txtCalle.getText();
         String numeroExterior = this.txtNumeroExterior.getText();
         String numeroInterior = this.txtNumeroInterior.getText();
         String codigoPostal = this.txtCodigoPostal.getText();
         String colonia = this.txtColonia.getText();
-        
-        if (
-            calle.isBlank() ||
-            numeroExterior.isBlank() ||
-            codigoPostal.isBlank() ||
-            colonia.isBlank()
-        ) {
+
+        if (calle.isBlank()
+                || numeroExterior.isBlank()
+                || codigoPostal.isBlank()
+                || colonia.isBlank()) {
             throw new PersistenciaException("Campos necesarios vacíos.");
         }
-        
-        if (
-            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(calle, 100) ||
-            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(numeroExterior, 10) ||
-            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(numeroInterior, 10) ||
-            !ValidacionDatos.validarSoloNumerosYLongitud(codigoPostal, 5) ||
-            !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(colonia, 100)
-        ) {
+
+        if (!ValidacionDatos.validarSoloLetrasYNumerosYLongitud(calle, 100)
+                || !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(numeroExterior, 10)
+                || !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(numeroInterior, 10)
+                || !ValidacionDatos.validarSoloNumerosYLongitud(codigoPostal, 5)
+                || !ValidacionDatos.validarSoloLetrasYNumerosYLongitud(colonia, 100)) {
             throw new PersistenciaException("Datos inválidos o longitud máxima de caracteres.");
         }
-        
+
         this.direccion = new Direccion(calle, numeroExterior, numeroInterior, codigoPostal, colonia);
-        
+
         return this.direccion;
     }
-    
+
     private Cliente extraerDatosCliente() throws PersistenciaException {
         String fechaDeNacimiento = this.txtAnio.getText() + "/" + this.txtMes.getText() + "/" + this.txtDia.getText();
         String telefono = this.txtNumeroTelefonico.getText();
         String nombreUsuario = this.txtNombreUsuario.getText();
         String contrasenia = this.txtContrasenia.getText();
-        
-        if (
-            this.txtAnio.getText().isBlank() ||
-            this.txtMes.getText().isBlank() ||
-            this.txtMes.getText().isBlank() ||
-            telefono.isBlank() ||
-            nombreUsuario.isBlank() ||
-            contrasenia.isBlank()
-        ) {
+
+        if (this.txtAnio.getText().isBlank()
+                || this.txtMes.getText().isBlank()
+                || this.txtMes.getText().isBlank()
+                || telefono.isBlank()
+                || nombreUsuario.isBlank()
+                || contrasenia.isBlank()) {
             throw new PersistenciaException("Campos necesarios vacíos.");
         }
-        
-        if (
-            !ValidacionDatos.validarSoloNumerosYLongitud(this.txtAnio.getText(), 4) ||
-            !ValidacionDatos.validarSoloNumerosYLongitud(this.txtMes.getText(), 2) ||
-            !ValidacionDatos.validarSoloNumerosYLongitud(this.txtDia.getText(), 2) ||
-            !ValidacionDatos.validarSoloNumerosYLongitud(telefono, 10)
-        ) {
+
+        if (!ValidacionDatos.validarSoloNumerosYLongitud(this.txtAnio.getText(), 4)
+                || !ValidacionDatos.validarSoloNumerosYLongitud(this.txtMes.getText(), 2)
+                || !ValidacionDatos.validarSoloNumerosYLongitud(this.txtDia.getText(), 2)
+                || !ValidacionDatos.validarSoloNumerosYLongitud(telefono, 10)) {
             throw new PersistenciaException("Datos inválidos, longitud máxima de caracteres y/o caracteres inválidos");
         }
-        
-        if (
-            ValidacionDatos.validarCadenaConEspacios(nombreUsuario) ||
-            nombreUsuario.length() > 20 ||
-            ValidacionDatos.validarCadenaConEspacios(contrasenia) ||
-            contrasenia.length () > 50
-        ) {
+
+        if (ValidacionDatos.validarCadenaConEspacios(nombreUsuario)
+                || nombreUsuario.length() > 20
+                || ValidacionDatos.validarCadenaConEspacios(contrasenia)
+                || contrasenia.length() > 50) {
             throw new PersistenciaException("Credenciales invalidas.");
         }
-        
+
         this.cliente = new Cliente(null, null, fechaDeNacimiento, telefono, nombreUsuario, Encriptador.encriptar(contrasenia));
-        
+
         return this.cliente;
     }
-    
+
     private void guardarClienteEnBaseDeDatos() {
         try {
             NombreCompleto nombreCompleto = this.extraerDatosNombreCompleto();
             Direccion direccion = this.extraerDatosDireccion();
             Cliente cliente = this.extraerDatosCliente();
-            
-            NombreCompleto nombreCompletoGuardado = this.nombresCompletosDAO.insertar(new NombreCompleto(
-                    nombreCompleto.getNombres(),
-                    nombreCompleto.getApellidoPaterno(),
-                    nombreCompleto.getApellidoMaterno()
-            ));
-            
-            Direccion direccionGuardada = this.direccionesDAO.insertar(new Direccion(
-                    direccion.getCalle(),
-                    direccion.getNumeroExterior(),
-                    direccion.getNumeroInterior(),
-                    direccion.getCodigoPostal(),
-                    direccion.getColonia()
-            ));
-            
-            Cliente clienteGuardado = this.clientesDAO.insertar(new Cliente(
-                    nombreCompletoGuardado.getIdNombre(),
-                    direccionGuardada.getIdDireccion(),
-                    cliente.getFechaNacimiento(),
-                    cliente.getTelefono(),
-                    cliente.getUsuario(),
-                    cliente.getContrasenia()
-            ));
-            
-            this.mostrarMensajeClienteGuardado(nombreCompleto);
+
+            if (!this.validarUsuarioUnico(cliente.getUsuario())) {
+                this.mostrarErrorAlGuardarCliente("El usuario ya existe.");
+            } else {
+                NombreCompleto nombreCompletoGuardado = this.nombresCompletosDAO.insertar(new NombreCompleto(
+                        nombreCompleto.getNombres(),
+                        nombreCompleto.getApellidoPaterno(),
+                        nombreCompleto.getApellidoMaterno()
+                ));
+
+                Direccion direccionGuardada = this.direccionesDAO.insertar(new Direccion(
+                        direccion.getCalle(),
+                        direccion.getNumeroExterior(),
+                        direccion.getNumeroInterior(),
+                        direccion.getCodigoPostal(),
+                        direccion.getColonia()
+                ));
+
+                Cliente clienteGuardado = this.clientesDAO.insertar(new Cliente(
+                        nombreCompletoGuardado.getIdNombre(),
+                        direccionGuardada.getIdDireccion(),
+                        cliente.getFechaNacimiento(),
+                        cliente.getTelefono(),
+                        cliente.getUsuario(),
+                        cliente.getContrasenia()
+                ));
+                this.mostrarMensajeClienteGuardado(nombreCompleto);
+                
+            }
         } catch (PersistenciaException e) {
             this.mostrarErrorAlGuardarCliente(e.getMessage());
         }
     }
-    
-    private void mostrarMensajeClienteGuardado(NombreCompleto nombreCompleto){
+
+    private void mostrarMensajeClienteGuardado(NombreCompleto nombreCompleto) {
         JOptionPane.showConfirmDialog(this, "!Bienvenido " + nombreCompleto.getNombres() + "!\nYa puede iniciar sesión. :)", "Éxito", JOptionPane.DEFAULT_OPTION);
     }
-    
-    private void mostrarErrorAlGuardarCliente(String msg){
+
+    private void mostrarErrorAlGuardarCliente(String msg) {
         JOptionPane.showMessageDialog(this, "No pudimos crear tu cuenta, intenta otra vez.\n" + msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean validarUsuarioUnico(String usuario) throws PersistenciaException {
+        Cliente clienteConsultar = this.clientesDAO.consultarPorUsuario(usuario);
+
+        return clienteConsultar == null;
     }
 
     private void limpiarCampos() {
@@ -197,7 +195,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
         this.txtNumeroInterior.setText("");
         this.txtNumeroTelefonico.setText("");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
