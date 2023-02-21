@@ -15,10 +15,11 @@ import interfaces.IConexionBD;
  */
 public class PantallaInicio extends javax.swing.JFrame {
 
-    private IConexionBD manejadorConexiones;
+    private final IConexionBD manejadorConexiones;
     
     /**
      * Creates new form PantallaInicio
+     * @param manejadorConexiones
      */
     public PantallaInicio(IConexionBD manejadorConexiones) {
         this.manejadorConexiones = manejadorConexiones;
@@ -123,8 +124,6 @@ public class PantallaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSoyClienteActionPerformed
 
     private void btnNoSoyClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoSoyClienteActionPerformed
-        
-        
         RegistrarCliente registro = new RegistrarCliente(
                 new ClientesDAO(this.manejadorConexiones),
                 new NombresCompletosDAO(this.manejadorConexiones),

@@ -35,9 +35,7 @@ public class CuentasDAO implements ICuentasDAO {
         String codigoSQL = "SELECT idCuenta, idCliente, numeroCuenta, fechaApertura, saldo "
                 + "FROM Cuentas WHERE idCuenta = ?";
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
-                PreparedStatement comando = conexion.prepareStatement(codigoSQL);
-        ) {
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL);) {
             comando.setInt(1, id);
             ResultSet resultado = comando.executeQuery();
 
@@ -66,11 +64,9 @@ public class CuentasDAO implements ICuentasDAO {
         String codigoSQL = "INSERT INTO Cuentas (numeroCuenta, fechaApertura, saldo, idCliente) "
                 + "VALUES (?,?,?,?)";
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
-                PreparedStatement comando = conexion.prepareStatement(
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
-                Statement.RETURN_GENERATED_KEYS);
-        ) {
+                Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, cuenta.getNumeroCuenta());
             comando.setString(2, cuenta.getFechaApertura());
             comando.setDouble(3, cuenta.getSaldo());
@@ -112,15 +108,8 @@ public class CuentasDAO implements ICuentasDAO {
         }
     }
 
-//    @Override
-//    public Cliente actualizar(Integer id) throws PersistenciaException {
-//       
-//        
-//    }
-
-        
-        
-        
-        
+    @Override
+    public Cuenta actualizar(Integer id) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

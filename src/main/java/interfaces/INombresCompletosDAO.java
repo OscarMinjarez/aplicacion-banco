@@ -1,6 +1,5 @@
 package interfaces;
 
-import dominio.Cliente;
 import dominio.NombreCompleto;
 import excepciones.PersistenciaException;
 
@@ -12,6 +11,6 @@ public interface INombresCompletosDAO {
 
     public NombreCompleto eliminar(Integer id) throws PersistenciaException;
 
-    public Cliente actualizar(Integer id) throws PersistenciaException;
+    public NombreCompleto actualizar(Integer id, NombreCompleto nuevoNombreCompleto) throws PersistenciaException;
 
 }

@@ -5,7 +5,6 @@
  */
 package interfaces;
 
-import dominio.Cliente;
 import dominio.Direccion;
 import excepciones.PersistenciaException;
 

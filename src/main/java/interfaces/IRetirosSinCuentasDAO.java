@@ -21,6 +21,6 @@ public interface IRetirosSinCuentasDAO {
 
     public RetiroSinCuenta eliminar(Integer id) throws PersistenciaException;
 
-    public Cliente actualizar(Integer id) throws PersistenciaException;
+    public RetiroSinCuenta actualizar(Integer id) throws PersistenciaException;
 
 }

@@ -112,4 +112,10 @@ public class RetirosSinCuentasDAO implements IRetirosSinCuentasDAO {
 
     }
 
+    @Override
+    public RetiroSinCuenta actualizar(Integer id) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    
 }

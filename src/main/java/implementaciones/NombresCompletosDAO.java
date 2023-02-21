@@ -27,20 +27,18 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
                 + "FROM NombresCompletos WHERE idNombreCompleto = ?";
 
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
-                PreparedStatement comando = conexion.prepareStatement(codigoSQL)
-        ) {
-                comando.setInt(1, id);
-                ResultSet resultado = comando.executeQuery();
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
+            comando.setInt(1, id);
+            ResultSet resultado = comando.executeQuery();
 
-                NombreCompleto nombreCompleto = null;
+            NombreCompleto nombreCompleto = null;
 
             if (resultado.next()) {
                 Integer idNombreCompleto = resultado.getInt("idNombreCompleto");
                 String nombres = resultado.getString("nombres");
                 String apellidoPaterno = resultado.getString("apellidoPaterno");
                 String apellidoMaterno = resultado.getString("apellidoMaterno");
-                
+
                 nombreCompleto = new NombreCompleto(idNombreCompleto, nombres, apellidoPaterno, apellidoMaterno);
             }
 
@@ -55,26 +53,24 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
     public NombreCompleto insertar(NombreCompleto nombreCompleto) throws PersistenciaException {
         String codigoSQL = "INSERT INTO NombresCompletos (nombres, apellidoPaterno, apellidoMaterno) "
                 + "VALUES(?,?,?)";
-        try ( 
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
-                PreparedStatement comando = conexion.prepareStatement(
-                        codigoSQL,
-                        Statement.RETURN_GENERATED_KEYS
-                );
-        ) {
-            comando.setString(1,  nombreCompleto.getNombres());
+        try (
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL,
+                Statement.RETURN_GENERATED_KEYS
+        );) {
+            comando.setString(1, nombreCompleto.getNombres());
             comando.setString(2, nombreCompleto.getApellidoPaterno());
             comando.setString(3, nombreCompleto.getApellidoMaterno());
-            
+
             comando.executeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
-            
+
             if (resultado.next()) {
                 Integer id = resultado.getInt(Statement.RETURN_GENERATED_KEYS);
                 nombreCompleto.setIdNombre(id);
                 return nombreCompleto;
             }
-            
+
             LOG.log(Level.WARNING, "Se inserto el nombre completo pero no se genero id.");
             throw new PersistenciaException("Se inserto el nombre completo pero no se genero id.");
         } catch (SQLException e) {
@@ -86,19 +82,47 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
     @Override
     public NombreCompleto eliminar(Integer id) throws PersistenciaException {
         String codigoSQL = "DELETE FROM NombresCompletos WHERE idNombreCompleto = ?";
-        
+
         try {
             Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
-            
+
             NombreCompleto nombreBusca = this.consultar(id);
             comando.setInt(1, id);
             comando.execute();
-            
+
             return nombreBusca;
         } catch (SQLException e) {
             LOG.log(Level.WARNING, e.getMessage());
             throw new PersistenciaException("No existe el nombre completo a eliminar: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public NombreCompleto actualizar(Integer id, NombreCompleto nuevoNombreCompleto) throws PersistenciaException {
+        String codigoSQL = "UPDATE NombresCompletos SET idNombreCompleto = ?, nombres = ?, apellidoPaterno = ?, apellidoMaterno = ? "
+                + " FROM NombreCompleto WHERE idNombreCompleto = ?";
+        try (
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL,
+                Statement.RETURN_GENERATED_KEYS);) {
+
+            comando.setString(1, nuevoNombreCompleto.getNombres());
+            comando.setString(2, nuevoNombreCompleto.getApellidoPaterno());
+            comando.setString(3, nuevoNombreCompleto.getApellidoMaterno());
+            comando.setInt(4, nuevoNombreCompleto.getIdNombre());
+
+            comando.executeLargeUpdate();
+
+            if (comando.execute()) {
+                return nuevoNombreCompleto;
+            }
+            
+            LOG.log(Level.WARNING, "Se inserto la direccion pero no se genero id.");
+            throw new PersistenciaException("Se inserto la direccion pero no se genero id.");
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+            throw new PersistenciaException("No se pudo insertar el nombre completo: " + e.getMessage());
         }
     }
 }

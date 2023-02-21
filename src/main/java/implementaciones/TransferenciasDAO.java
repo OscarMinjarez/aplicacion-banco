@@ -4,7 +4,6 @@
  */
 package implementaciones;
 
-import dominio.Cliente;
 import dominio.Transaccion;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
@@ -31,6 +30,7 @@ public class TransferenciasDAO implements ITransaccionesDAO {
     }
 
     @Override
+    
     public Transaccion consultar(Integer id) throws PersistenciaException {
         String codigoSQL = "SELECT folio, monto, fechaHora, idCuentaOrigen, idCuentaDestino "
                 + "FROM Transferencias WHERE folio = ?";
@@ -61,8 +61,8 @@ public class TransferenciasDAO implements ITransaccionesDAO {
         }
     }
 
-    @Override
-    public Transaccion insertar(Transaccion transaccion) throws PersistenciaException {
+  @Override
+    public Transaccion Insertar(Transaccion transaccion) throws PersistenciaException {
         String codigoSQL = "INSERT INTO Transferencias (idCuentaOrigen, idCuentaDestino, monto, fechaHora) "
                 + "VALUES (?,?,?,?)";
         try (
@@ -94,7 +94,7 @@ public class TransferenciasDAO implements ITransaccionesDAO {
         }
 
     }
-
+        
     @Override
     public Transaccion eliminar(Integer id) throws PersistenciaException {
         String codigoSQL = "DELETE FROM Transferencias WHERE folio  = ?";
@@ -114,5 +114,13 @@ public class TransferenciasDAO implements ITransaccionesDAO {
 
         }
     }
+
+    @Override
+    public Transaccion actualizar(Integer id) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+   
+   
 
 }
