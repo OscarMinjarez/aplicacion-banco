@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package implementaciones;
 
-import dominio.Cliente;
 import dominio.Cuenta;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
@@ -18,7 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Clase que se encarga de se encarga de todas las consultas a la tabla Cuentas.
+ * 
+ * @author Oscar
  * @author naely
  */
 public class CuentasDAO implements ICuentasDAO {
@@ -26,10 +23,21 @@ public class CuentasDAO implements ICuentasDAO {
     private static final Logger LOG = Logger.getLogger(CuentasDAO.class.getName());
     private final IConexionBD MANEJADOR_CONEXIONES;
 
+    /**
+     * Método constructor que recibe el manejador de conexiones de la base de datos.
+     * 
+     * @param MANEJADOR_CONEXIONES driver de sql.
+     */
     public CuentasDAO(IConexionBD MANEJADOR_CONEXIONES) {
         this.MANEJADOR_CONEXIONES = MANEJADOR_CONEXIONES;
     }
 
+    /**
+     * Método que te permite consultar una cuenta con un Id.
+     * @param id id a consultar.
+     * @return cuenta consultada si esta existe.
+     * @throws PersistenciaException si no existe la cuenta consultada.
+     */
     @Override
     public Cuenta consultar(Integer id) throws PersistenciaException {
         String codigoSQL = "SELECT idCuenta, idCliente, numeroCuenta, fechaApertura, saldo "
@@ -58,19 +66,24 @@ public class CuentasDAO implements ICuentasDAO {
         }
 
     }
-
+    
+    /**
+     * Método que se encarga de insertar una cuenta a la base de datos.
+     * @param cuenta cuenta a isnertar.
+     * @return cuenta insertada.
+     * @throws PersistenciaException si no se puede insertar.
+     */
     @Override
     public Cuenta insertar(Cuenta cuenta) throws PersistenciaException {
-        String codigoSQL = "INSERT INTO Cuentas (numeroCuenta, fechaApertura, saldo, idCliente) "
-                + "VALUES (?,?,?,?)";
+        String codigoSQL = "INSERT INTO Cuentas (numeroCuenta, saldo, idCliente) "
+                + "VALUES (?,?,?)";
         try (
                 Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
                 Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, cuenta.getNumeroCuenta());
-            comando.setString(2, cuenta.getFechaApertura());
-            comando.setDouble(3, cuenta.getSaldo());
-            comando.setInt(4, cuenta.getIdCliente());
+            comando.setDouble(2, cuenta.getSaldo());
+            comando.setInt(3, cuenta.getIdCliente());
 
             comando.executeLargeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
@@ -89,6 +102,12 @@ public class CuentasDAO implements ICuentasDAO {
         }
     }
 
+    /**
+     * Método que se encarga de eliminar una cuenta desde un id.
+     * @param id id de la cuenta.
+     * @return cuenta eliminada.
+     * @throws PersistenciaException error si no existe la cuenta.
+     */
     @Override
     public Cuenta eliminar(Integer id) throws PersistenciaException {
         String codigoSQL = "DELETE FROM Cuentas WHERE idCuenta = ?";
