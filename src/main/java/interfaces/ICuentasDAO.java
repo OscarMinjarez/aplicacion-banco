@@ -21,6 +21,6 @@ public interface ICuentasDAO {
 
     public Cuenta eliminar(Integer id) throws PersistenciaException;
 
-    public Cuenta actualizar(Integer id) throws PersistenciaException;
+    public Cuenta actualizar(Integer id,Cuenta actualizacionCuenta) throws PersistenciaException;
 
 }

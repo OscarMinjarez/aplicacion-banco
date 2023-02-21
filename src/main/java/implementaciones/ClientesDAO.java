@@ -35,9 +35,7 @@ public class ClientesDAO implements IClientesDAO {
                 + "FROM Clientes WHERE idCliente = ?";
 
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
-                PreparedStatement comando = conexion.prepareStatement(codigoSQL)
-        ) {
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL)) {
             comando.setInt(1, id);
             ResultSet resultado = comando.executeQuery();
 
@@ -54,7 +52,7 @@ public class ClientesDAO implements IClientesDAO {
 
                 cliente = new Cliente(idCliente, idNombre, idDireccion, fechaNacimiento, telefono, usuario, contrasenia);
             }
-            
+
             return cliente;
         } catch (SQLException ex) {
             LOG.log(Level.WARNING, ex.getMessage());
@@ -68,11 +66,9 @@ public class ClientesDAO implements IClientesDAO {
         String codigoSQL = "INSERT INTO Clientes (idNombreCompleto, idDireccion, fechaNacimiento, telefono, usuario, contrasenia)"
                 + "VALUES(?,?,?,?,?,?)";
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion();
-                PreparedStatement comando = conexion.prepareStatement(
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL,
-                Statement.RETURN_GENERATED_KEYS);
-        ) {
+                Statement.RETURN_GENERATED_KEYS);) {
             comando.setInt(1, cliente.getIdNombre());
             comando.setInt(2, cliente.getIdDireccion());
             comando.setString(3, cliente.getFechaNacimiento());
@@ -118,8 +114,34 @@ public class ClientesDAO implements IClientesDAO {
         }
     }
 
+ 
     @Override
-    public Cliente actualizar(Integer id) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Cliente actualizar(Integer id, Cliente actualizacionDatos) throws PersistenciaException {
+        String codigoSQL = "UPDATE Clientes SET idCliente = ?, idNombre = ?, idDireccion = ?, fechaNacimiento = ?, telefono = ?, usuario = ?, contrasenia = ?"
+                + "WHERE idCliente = ?";
+
+        try (
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL,
+                Statement.RETURN_GENERATED_KEYS);) {
+
+            comando.setInt(1, actualizacionDatos.getIdCliente());
+            comando.setInt(2, actualizacionDatos.getIdNombre());
+            comando.setInt(3, actualizacionDatos.getIdDireccion());
+            comando.setString(4, actualizacionDatos.getFechaNacimiento());
+            comando.setString(5, actualizacionDatos.getTelefono());
+            comando.setString(6, actualizacionDatos.getUsuario());
+            comando.setString(7, actualizacionDatos.getContrasenia());
+            comando.setInt(8, id);
+
+            comando.executeUpdate();
+
+            actualizacionDatos.setIdNombre(id);
+            return actualizacionDatos;
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage());
+            throw new PersistenciaException("No se pudo insertar el nombre completo: " + ex.getMessage());
+        }
     }
+
 }

@@ -114,13 +114,6 @@ public class TransaccionDAO implements ITransaccionesDAO {
 
         }
     }
-
-    @Override
-    public Transaccion actualizar(Integer id) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-   
    
 
 }

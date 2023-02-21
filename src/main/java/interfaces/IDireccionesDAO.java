@@ -20,6 +20,6 @@ public interface IDireccionesDAO {
 
     public Direccion eliminar(Integer id) throws PersistenciaException;
 
-    public Direccion actualizar(Direccion direccion) throws PersistenciaException;
+    public Direccion actualizar(Direccion direccion, Direccion actualizacionDireccion) throws PersistenciaException;
 
 }

@@ -21,7 +21,7 @@ public interface IClientesDAO {
 
     public Cliente eliminar(Integer id)throws PersistenciaException;
     
-    public Cliente actualizar(Integer id) throws PersistenciaException;
+    public Cliente actualizar(Integer id, Cliente actualizacionDatos) throws PersistenciaException;
        
 }
 

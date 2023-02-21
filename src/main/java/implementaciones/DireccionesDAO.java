@@ -1,6 +1,4 @@
-
 package implementaciones;
-
 
 import dominio.Direccion;
 import excepciones.PersistenciaException;
@@ -106,36 +104,29 @@ public class DireccionesDAO implements IDireccionesDAO {
     }
 
     @Override
-    public Direccion actualizar(Direccion direccion) throws PersistenciaException {
-        String codigoSQL = "UPDATE direccion set idDireccion, calle, numeroExterior, numeroInterior, codigoPostal, colonia  "
-                + "FROM Direccion WHERE idDireccion = ?";
+    public Direccion actualizar(Direccion direccion, Direccion actualizacionDireccion) throws PersistenciaException {
+        String codigoSQL = "UPDATE Direccion SET idDireccion = ?, calle = ?, numeroExterior = ?, numeroInterior = ?, codigoPostal = ?, colonia = ? "
+                + "WHERE idDireccion = ? ";
 
         try (
-                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); 
-                PreparedStatement comando = conexion.prepareStatement(codigoSQL, Statement.RETURN_GENERATED_KEYS);
-                
-                ) {
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL,
+                Statement.RETURN_GENERATED_KEYS);) {
 
-            comando.setString(1, direccion.getCalle());
-            comando.setString(2, direccion.getNumeroExterior());
-            comando.setString(3, direccion.getNumeroInterior());
-            comando.setString(4, direccion.getCodigoPostal());
-            comando.setString(5, direccion.getColonia());
-            comando.executeUpdate();
-            ResultSet resultado = comando.getGeneratedKeys();
-            
-            if (resultado.next()) {
-                Integer id = resultado.getInt(Statement.RETURN_GENERATED_KEYS);
-                direccion.setIdDireccion(id);
-                return direccion;
-            }
+            comando.setInt(1, actualizacionDireccion.getIdDireccion());
+            comando.setString(2, actualizacionDireccion.getCalle());
+            comando.setString(3, actualizacionDireccion.getNumeroExterior());
+            comando.setString(4, actualizacionDireccion.getNumeroInterior());
+            comando.setString(5, actualizacionDireccion.getCodigoPostal());
+            comando.setString(6, actualizacionDireccion.getColonia());
 
-            LOG.log(Level.WARNING, "Se inserto la direccion pero no se genero id.");
-            throw new PersistenciaException("Se inserto la direccion pero no se genero id.");
-        } catch (SQLException e) {
-            LOG.log(Level.SEVERE, e.getMessage());
-            throw new PersistenciaException("No se pudo insertar el nombre completo: " + e.getMessage());
+            comando.executeLargeUpdate();
+
+            actualizacionDireccion.setIdDireccion(Integer.SIZE);
+            return actualizacionDireccion;
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage());
+            throw new PersistenciaException("No se pudo insertar el nombre completo: " + ex.getMessage());
         }
-
     }
 }

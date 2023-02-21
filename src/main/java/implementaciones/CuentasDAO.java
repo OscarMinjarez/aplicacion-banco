@@ -109,7 +109,29 @@ public class CuentasDAO implements ICuentasDAO {
     }
 
     @Override
-    public Cuenta actualizar(Integer id) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Cuenta actualizar(Integer id, Cuenta actualizacionCuenta) throws PersistenciaException {
+        String codigoSQL = "UPDATE Cuenta SET idCuenta = ?, idCliente, numeroCuenta, fechaApertura, saldo"
+                + "WHERE idCuenta = ?";
+
+        try (
+                Connection conexion = MANEJADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL,
+                Statement.RETURN_GENERATED_KEYS);) {
+
+            comando.setInt(1, actualizacionCuenta.getIdCliente());
+            comando.setInt(2, actualizacionCuenta.getIdCliente());
+            comando.setString(3, actualizacionCuenta.getNumeroCuenta());
+            comando.setString(4, actualizacionCuenta.getFechaApertura());
+            comando.setDouble(5, actualizacionCuenta.getSaldo());
+
+            comando.executeLargeUpdate();
+
+            actualizacionCuenta.setIdCuenta(id);
+            return actualizacionCuenta;
+
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage());
+            throw new PersistenciaException("No se pudo insertar el nombre completo: " + ex.getMessage());
+        }
     }
 }

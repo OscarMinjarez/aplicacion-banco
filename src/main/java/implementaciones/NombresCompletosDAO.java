@@ -116,9 +116,9 @@ public class NombresCompletosDAO implements INombresCompletosDAO {
 
             nuevoNombreCompleto.setIdNombre(id);
             return nuevoNombreCompleto;
-        } catch (SQLException e) {
-            LOG.log(Level.SEVERE, e.getMessage());
-            throw new PersistenciaException("No se pudo insertar el nombre completo: " + e.getMessage());
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage());
+            throw new PersistenciaException("No se pudo insertar el nombre completo: " + ex.getMessage());
         }
     }
 }
