@@ -123,6 +123,7 @@ public class DireccionesDAO implements IDireccionesDAO {
             comando.setString(5, direccion.getColonia());
             comando.executeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
+            
             if (resultado.next()) {
                 Integer id = resultado.getInt(Statement.RETURN_GENERATED_KEYS);
                 direccion.setIdDireccion(id);

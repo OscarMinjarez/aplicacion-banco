@@ -81,7 +81,7 @@ public class TransferenciasDAO implements ITransaccionesDAO {
 
             if (resultado.next()) {
                 Integer id = resultado.getInt(Statement.RETURN_GENERATED_KEYS);
-                transaccion.setIdCuentaDestino(id);
+                transaccion.setFolio(id);
                 return transaccion;
 
             }

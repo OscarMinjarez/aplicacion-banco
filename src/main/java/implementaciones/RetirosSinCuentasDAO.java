@@ -49,7 +49,7 @@ public class RetirosSinCuentasDAO implements IRetirosSinCuentasDAO {
                 String estado = resultado.getString("estado");
                 Integer idCuenta = resultado.getInt("idCuenta");
 
-                retiroSinCuenta = new RetiroSinCuenta(idCuenta, contrasenia);
+                retiroSinCuenta = new RetiroSinCuenta(idCuenta, contrasenia, folio, fechaHora, monto, estado);
             }
             return retiroSinCuenta;
         } catch (SQLException ex) {
